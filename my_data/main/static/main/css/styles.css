@@ -1,0 +1,100 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: "Onest", sans-serif;
+  font-weight: normal;
+}
+
+:root {
+  --accent-color: #0083F5;
+  --black-color: #373737;
+  --white-color: #fff;
+  --grey-color: #ECECEC;
+  --dark-grey-color: #AFAFAF;
+}
+
+.text-h2 {
+  font-family: "Onest", sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.text-h3 {
+  font-family: "Onest", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.text-h4 {
+  font-family: "Onest", sans-serif;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.text-white {
+  color: var(--dark-grey-color);
+}
+
+.text-white:hover {
+  color: var(--white-color);
+}
+
+.text-black {
+  color: var(--black-color);
+}
+
+.header {
+  background-color: var(--black-color);
+}
+
+.nav {
+  margin: 0, auto;
+  padding: 10px 20px;
+  max-width: 1600px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.left_btn {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 30px;
+}
+
+.logo {
+  cursor: pointer;
+  margin-right: 30px;
+}
+
+.nav_bar_btn {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+/* Активная кнопка */
+/* .active {
+  color: var(--white-color);
+} */
+
+.nav_bar_btn_img {
+  height: 20px;
+  margin-right: 5px;
+}
+
+.nav_bar_btn_profil {}

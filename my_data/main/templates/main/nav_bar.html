@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'main/css/styles.css' %}">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav">
+                <div class="left_btn">
+                    <img src="{% static 'main/img/logo_white.svg' %}" alt="Logo" height="35px" class="logo">
+                    <button class="nav_bar_btn">
+                        <img src="{% static 'main/img/files.svg' %}" alt="" class="nav_bar_btn_img">
+                        <h3 class="text-h3 text-white active">Файлы</h3>
+                    </button>
+                    <button class="nav_bar_btn">
+                        <img src="{% static 'main/img/charts.svg' %}" alt="" class="nav_bar_btn_img">
+                        <h3 class="text-h3 text-white">Чарты</h3>
+                    </button>
+                    <button class="nav_bar_btn">
+                        <img src="{% static 'main/img/dashboards.svg' %}" alt="" class="nav_bar_btn_img">
+                        <h3 class="text-h3 text-white">Дашборды</h3>
+                    </button>
+                </div>
+                <button class="nav_bar_btn">
+                    <img src="{% static 'main/img/profile.svg' %}" alt="" class="nav_bar_btn_profil">
+                </button>
+            </div>
+        </div>
+    </header>
+    {% block content %}
+    {% endblock %}
+</body>
+
+</html>
