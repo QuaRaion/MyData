@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -18,19 +18,19 @@
         <div class="container">
             <div class="nav">
                 <div class="left_btn">
-                    <img src="{% static 'main/img/logo_white.svg' %}" alt="Logo" height="35px" class="logo">
-                    <button class="nav_bar_btn">
+                    <a href="{% url 'home' %}"><img src="{% static 'main/img/logo_white_new.svg' %}" alt="Logo" height="35px" class="logo"></a>
+                    <a class="nav_bar_btn" href="{% url 'files' %}">
                         <img src="{% static 'main/img/files.svg' %}" alt="" class="nav_bar_btn_img">
-                        <h3 class="text-h3 text-white active">Файлы</h3>
-                    </button>
-                    <button class="nav_bar_btn">
+                        <h3 class="text-h3 text-white_nav {% block active1 %}{% endblock %}">Файлы</h3>
+                    </a>
+                    <a class="nav_bar_btn" href="{% url 'charts' %}">
                         <img src="{% static 'main/img/charts.svg' %}" alt="" class="nav_bar_btn_img">
-                        <h3 class="text-h3 text-white">Чарты</h3>
-                    </button>
-                    <button class="nav_bar_btn">
+                        <h3 class="text-h3 text-white_nav {% block active2 %}{% endblock %}">Чарты</h3>
+                    </a>
+                    <a class="nav_bar_btn" href="{% url 'dashboards' %}">
                         <img src="{% static 'main/img/dashboards.svg' %}" alt="" class="nav_bar_btn_img">
-                        <h3 class="text-h3 text-white">Дашборды</h3>
-                    </button>
+                        <h3 class="text-h3 text-white_nav {% block active3 %}{% endblock %}">Дашборды</h3>
+                    </a>
                 </div>
                 <button class="nav_bar_btn">
                     <img src="{% static 'main/img/profile.svg' %}" alt="" class="nav_bar_btn_profil">
@@ -43,3 +43,5 @@
 </body>
 
 </html>
+
+

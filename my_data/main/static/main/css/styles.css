@@ -10,6 +10,19 @@ html {
   margin: 0;
 }
 
+button {
+  background: none;
+  border: none;
+  border-style: solid;
+  outline: none;
+  cursor: pointer;
+}
+
+a {
+  all: unset;
+  cursor: pointer;
+}
+
 body {
   font-family: "Onest", sans-serif;
   font-weight: normal;
@@ -41,11 +54,17 @@ body {
   font-size: 14px;
 }
 
-.text-white {
+.text-white_nav {
   color: var(--dark-grey-color);
+  transition: .3s ease;
 }
 
-.text-white:hover {
+.text-white_nav:hover {
+  color: var(--white-color);
+  transform: scale(1.05);
+}
+
+.text-white {
   color: var(--white-color);
 }
 
@@ -53,13 +72,27 @@ body {
   color: var(--black-color);
 }
 
+.text-accent {
+  color: var(--accent-color);
+}
+
+.text-dark-grey {
+  color: var(--dark-grey-color);
+}
+
 .header {
   background-color: var(--black-color);
+  margin-bottom: 20px;
+}
+
+.container {
+  padding: 0px 20px;
 }
 
 .nav {
   margin: 0, auto;
-  padding: 10px 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   max-width: 1600px;
   display: flex;
   align-items: center;
@@ -72,11 +105,13 @@ body {
   flex-direction: row;
   flex-wrap: nowrap;
   gap: 30px;
+  z-index: 3;
 }
 
 .logo {
   cursor: pointer;
   margin-right: 30px;
+  max-height: 30px;
 }
 
 .nav_bar_btn {
@@ -84,17 +119,159 @@ body {
   align-items: center;
   background-color: transparent;
   border: 0;
-  cursor: pointer;
+  z-index: 3;
 }
 
 /* Активная кнопка */
-/* .active {
+.active_btn {
   color: var(--white-color);
-} */
-
-.nav_bar_btn_img {
-  height: 20px;
-  margin-right: 5px;
+  transform: scale(1.05);
 }
 
-.nav_bar_btn_profil {}
+.nav_bar_btn_img {
+  height: 22px;
+  padding-right: 10px;
+}
+
+.charts_list {}
+
+.title_with_btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+}
+
+.title_with_btn_text {
+  color: var(--black-color);
+}
+
+.add_btn {
+  background-color: var(--accent-color);
+  border: transparent;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  transition: .3s ease;
+}
+
+.add_btn:hover {
+  transform: scale(1.05);
+}
+
+.add_btn_img {
+  padding-right: 6px;
+}
+
+.elem_list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-bottom: 30px;  
+}
+
+.elem_list_btn {
+  border-color: var(--grey-color);
+  border-width: 1px;
+  border-radius: 4px;
+  padding: 6px 8px;
+  min-width: 160px;
+  max-width: 280px;
+  white-space: nowrap; /* ограничение на 1 строку  */
+  flex: auto;
+  overflow: hidden;
+  
+  background-color: transparent;
+  transition: .3s ease;
+  display: block;
+}
+
+.elem_list_btn:hover {
+  border-color: var(--black-color);
+  transform: scale(1.03);
+}
+
+.modal_window {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.load_window {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px;
+  border-width: 2px;
+  background-color: var(--black-color);
+  border-radius: 10px;
+  border-style: dashed;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, .2);
+  background-color: var(--white-color);
+  padding: 40px;
+}
+
+.modal_window .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--black-color);
+  opacity: 0.4;
+  z-index: 0;
+}
+
+.modal_window_btn {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 30px;
+}
+
+.btn_close {
+  border-color: var(--dark-grey-color);
+  border-width: 1px;
+  border-radius: 6px;
+  padding: 4px 8px;
+  transition: .3s ease;
+}
+
+.btn_close:hover {
+  transform: scale(1.02);
+}
+
+.btn_save {
+  background-color: var(--grey-color);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px
+}
+
+.btn_save_active {
+  background-color: var(--accent-color);
+  transition: .3s ease;
+}
+
+.btn_save_active:hover {
+  transform: scale(1.03);
+}
+
+
+#load_file {
+  margin-top: 40px;
+  padding-bottom: 40px;
+}
+
+
+

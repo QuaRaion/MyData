@@ -2,7 +2,101 @@
 
 {% block title %}Чарты{% endblock %}
 
+{% block active2 %}active_btn{% endblock %}
+
 {% block content %}
-<!--мой код-->
+{% load static %}
+<section class="charts_list">
+    <div class="container">
+        <div class="title_with_btn">
+            <h2 class="text-h2 title_with_btn_text">Мои чарты</h2>
+            <button class="add_btn">
+                <img src="{% static 'main/img/white_plus.svg' %}" alt="" class="add_btn_img">
+                <h3 class="text-h3 text-white">чарт</h3>
+            </button>
+        </div>
+        <div class="elem_list">
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Sales Growth 2023</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Customer Satisfaction Survey</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Revenue Breakdown by Region</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Quarterly Financial Overview</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Market Share Analysis</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Product Performance Metrics</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Website Traffic Trends</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Social Media Engagement Stats</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Expense Report Summary</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Conversion Rate Analysis</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Annual Budget Overview</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Sales Forecast for Q4</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Employee Performance</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Customer Retention Rates</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Product Feedback</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Employee Performance</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Employee Performance</h3>
+            </button>
+            
+        </div>
+        <div class="title_with_btn">
+            <h2 class="text-h2 title_with_btn_text">Попробуйте поработать с готовыми чартами</h2>
+        </div>
+        <div class="elem_list">
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Sales Growth 2023</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Customer Satisfaction Survey</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Revenue Breakdown by Region</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Quarterly Financial Overview</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Sales Forecast for Q4</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Employee Performance</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">Customer Retention Rates</h3>
+            </button>
+        </div>
+    </div>
+
+</section>
 
 {% endblock %}
