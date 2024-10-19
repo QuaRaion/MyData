@@ -112,6 +112,11 @@ body {
   cursor: pointer;
   margin-right: 30px;
   max-height: 30px;
+  transition: .3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
 }
 
 .nav_bar_btn {
@@ -131,6 +136,11 @@ body {
 .nav_bar_btn_img {
   height: 22px;
   padding-right: 10px;
+  transition: .3s ease;
+}
+
+.nav_bar_btn_img:hover {
+  transform: scale(1.05);
 }
 
 .charts_list {}
@@ -267,11 +277,8 @@ body {
   transform: scale(1.03);
 }
 
-
 #load_file {
   margin-top: 40px;
   padding-bottom: 40px;
 }
-
-
 
