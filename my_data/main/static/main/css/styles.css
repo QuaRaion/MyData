@@ -127,7 +127,6 @@ body {
   z-index: 3;
 }
 
-/* Активная кнопка */
 .active_btn {
   color: var(--white-color);
   transform: scale(1.05);
