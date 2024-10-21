@@ -11,21 +11,21 @@
             <h2 class="text-h2 title_with_btn_text">Главная страница</h2>
         </div>
         <h3 class="text-h3 text-dark-grey"> Здесь будет общая информация о сервисе и о том, какие возможности он предоставляет</h3>
-        <h1>Детали Файла</h1>
+        <!-- <h1>Детали Файла</h1>
         <p><strong>Название:</strong> {{ file.name }}</p>
         <p><strong>Путь:</strong> <a href="{{ file.path }}" target="_blank">{{ file.path }}</a></p>
         <p><strong>Разделитель:</strong> {{ file.separator }}</p>
         <p><strong>Есть заголовок:</strong> {{ file.has_header }}</p>
-        <p><strong>Время создания:</strong> {{ file.created_time }}</p>
+        <p><strong>Время создания:</strong> {{ file.created_time }}</p> -->
+        
+        <!-- простой вывод содержимого файла из гугл диска -->
+        <!-- <div>
+            <h3>Содержимое файла:</h3>
+            <table>
+                {{ csv_data }}
+            </table>
+        </div> -->
     </div>
-    <div>
-        <h3>Содержимое файла:</h3>
-        <table>
-            {{ display(csv_data) }}
-        </table>
-    </div>
-
-
 </section>
 
 {% endblock %}

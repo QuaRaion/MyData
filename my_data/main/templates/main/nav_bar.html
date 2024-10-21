@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
     <title>{% block title %} {% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'main/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+    {% block style %}{% endblock %}
 </head>
 
 <body>
@@ -18,7 +19,7 @@
         <div class="container">
             <div class="nav">
                 <div class="left_btn">
-                    <a href="{% url 'home' %}"><img src="{% static 'main/img/logo_white_new.svg' %}" alt="Logo"
+                    <a href="{% url 'home' %}"><img src="{% static 'main/img/logo_white.svg' %}" alt="Logo"
                             height="35px" class="logo"></a>
                     <a class="nav_bar_btn" href="{% url 'files' %}">
                         <img src="{% static 'main/img/files.svg' %}" alt="" class="nav_bar_btn_img">

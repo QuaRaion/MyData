@@ -1,0 +1,62 @@
+{% extends 'main/nav_bar.html' %}
+
+{% block title %}Файлы{% endblock %}
+
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'files/css/style.css' %}">
+{% endblock %}
+
+{% block active1 %}active_btn{% endblock %}
+
+{% block content %}
+
+<section class="files_list">
+    <div class="container">
+        <div class="title_with_btn">
+            <h2 class="text-h2 title_with_btn_text">Мои файлы</h2>
+            <button class="add_btn">
+                <img src="{% static 'main/img/white_plus.svg' %}" alt="" class="add_btn_img">
+                <h3 class="text-h3 text-white">файл</h3>
+            </button>
+        </div>
+        {% if file %}
+        <div class="elem_list">
+                {% for el in file %}
+                <button class="elem_list_btn">
+                    <h3 class="text-h3 text-black">{{ el.name }}</h3>
+                </button>
+                {% endfor %}
+        </div>
+        {% else %}
+            <h3 class="text-h3 text-dark-grey">У вас пока нет загруженных файлов</h3>
+        {% endif %}
+        <div class="title_with_btn">
+            <h2 class="text-h2 title_with_btn_text">Научитесь на подготовленных данных</h2>
+        </div>
+        <div class="elem_list">
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">salary.csv</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">clients.csv</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">credit_risk.csv</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">drivers.csv</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">movies.csv</h3>
+            </button>
+            <button class="elem_list_btn">
+                <h3 class="text-h3 text-black">visits.csv</h3>
+            </button>
+        </div>
+        <img src="upload_file/img/logo2.png" height="100px" alt="">
+        
+    </div>
+</section>
+
+{% endblock %}
