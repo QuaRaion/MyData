@@ -10,16 +10,86 @@
 {% block active2 %}active_btn{% endblock %}
 
 {% block content %}
-{% load static %}
+
 <section class="charts_list">
     <div class="container">
         <div class="title_with_btn">
             <h2 class="text-h2 title_with_btn_text">Мои чарты</h2>
-            <button class="add_btn">
-                <img src="{% static 'main/img/white_plus.svg' %}" alt="" class="add_btn_img">
+            <button class="btn_add" id="btn_add_file">
+                <img src="{% static 'main/img/white_plus.svg' %}" alt="" class="btn_add_img">
                 <h3 class="text-h3 text-white">чарт</h3>
             </button>
         </div>
+        <dialog id="modal_select_file" class="modal_window">
+            <h3 class="h3-text modal_window_title title">Выберите файл, по которому будет создаваться чарт</h3>
+            {% if files %}
+                <div class="elem_list">
+                    {% for el in files %}
+                    <button class="elem_list_btn" onclick="selectFile(this, '{{ el.file_id }}' )">
+                        <h3 class="text-h3 text-black">{{ el.name }}</h3>
+                    </button>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h3 class="text-h3 text-dark-grey none_text">У вас нет загруженных файлов</h3>
+            {% endif %}
+
+            <h3 class="h3-text modal_window_title title">Попробуйте встроенные файлы</h3>
+            {% if default_files %}
+                <div class="elem_list">
+                    {% for el in default_files %}
+                    <button class="elem_list_btn" onclick="selectFile(this, 'default{{ el.file_id }}')">
+                        <h3 class="text-h3 text-black">{{ el.name }}</h3>
+                    </button>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h3 class="text-h3 text-dark-grey none_text">К сожалению сейчас встроенные файлы недоступны</h3>
+            {% endif %}
+            
+            <div class="modal_window_btn">
+                <button class="btn_add" id="btn_select_file">
+                    <h3 class="text-white">Выбрать</h3>
+                </button>
+                <button class="btn_add btn_close_modal" id="btn_close_modal">
+                    <h3 class="text-black">Отменить</h3>
+                </button>
+            </div>
+        </dialog>
+        <script>
+            btn_add_file.addEventListener('click', () => {
+                modal_select_file.showModal()
+            })
+
+            let selected_file_id = null;
+            
+            function selectFile(button, file_id) {
+                const buttons = document.querySelectorAll('.elem_list_btn');
+                buttons.forEach(btn => {
+                    btn.classList.remove('selected_file');
+                });
+
+                button.classList.add('selected_file');
+                selected_file_id = file_id;
+
+                const btnSelectFile = document.getElementById('btn_select_file');
+                btnSelectFile.disabled = false;
+            }
+
+            btn_select_file.addEventListener('click', () => {
+                if (selected_file_id) {
+                    window.location.href = `/charts/create_chart/${selected_file_id}/`;
+                } else {
+                    console.log("!! файл не выбран !!");
+                }
+            
+            });
+
+            btn_close_modal.addEventListener('click', () => {
+                modal_select_file.close()
+            })
+        </script>
+
         <div class="elem_list">
             <button class="elem_list_btn">
                 <h3 class="text-h3 text-black">Sales Growth 2023</h3>

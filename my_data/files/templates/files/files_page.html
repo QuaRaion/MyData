@@ -15,14 +15,14 @@
     <div class="container">
         <div class="title_with_btn">
             <h2 class="text-h2 title_with_btn_text">Мои файлы</h2>
-            <button class="add_btn">
-                <img src="{% static 'main/img/white_plus.svg' %}" alt="" class="add_btn_img">
+            <button class="btn_add">
+                <img src="{% static 'main/img/white_plus.svg' %}" alt="" class="btn_add_img">
                 <h3 class="text-h3 text-white">файл</h3>
             </button>
         </div>
-        {% if file %}
+        {% if files %}
         <div class="elem_list">
-                {% for el in file %}
+                {% for el in files %}
                 <button class="elem_list_btn">
                     <h3 class="text-h3 text-black">{{ el.name }}</h3>
                 </button>
@@ -53,9 +53,7 @@
             <button class="elem_list_btn">
                 <h3 class="text-h3 text-black">visits.csv</h3>
             </button>
-        </div>
-        <img src="upload_file/img/logo2.png" height="100px" alt="">
-        
+        </div>        
     </div>
 </section>
 

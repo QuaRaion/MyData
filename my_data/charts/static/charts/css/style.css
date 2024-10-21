@@ -11,7 +11,7 @@
   color: var(--black-color);
 }
 
-.add_btn {
+.btn_add {
   background-color: var(--accent-color);
   border: transparent;
   padding: 6px 8px;
@@ -21,11 +21,11 @@
   transition: .3s ease;
 }
 
-.add_btn:hover {
+.btn_add:hover {
   transform: scale(1.05);
 }
 
-.add_btn_img {
+.btn_add_img {
   padding-right: 6px;
 }
 
@@ -45,7 +45,7 @@
   padding: 6px 8px;
   min-width: 160px;
   max-width: 280px;
-  white-space: nowrap; /* ограничение на 1 строку  */
+  white-space: nowrap;
   flex: auto;
   overflow: hidden;
   
@@ -57,4 +57,41 @@
 .elem_list_btn:hover {
   border-color: var(--black-color);
   transform: scale(1.03);
+}
+
+.modal_window[open] {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 30px;
+  background-color: white;
+  border: 1px solid var(--grey-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  padding-top: 4px;
+  padding-bottom: 10px;
+}
+
+.modal_window_btn {
+  display: flex;
+  justify-content: end;
+  flex-direction: row;
+  justify-self: end;
+}
+
+.btn_close_modal {
+  margin-left: 20px;
+  background-color: var(--grey-color);
+}
+
+.selected_file {
+  border-color: var(--black-color);
 }

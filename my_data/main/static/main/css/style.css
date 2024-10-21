@@ -54,6 +54,14 @@ body {
   font-size: 14px;
 }
 
+title {
+  padding-bottom: 10px;
+}
+
+.none_text {
+  padding-bottom: 20px;
+}
+
 .text-white_nav {
   color: var(--dark-grey-color);
   transition: .3s ease;
