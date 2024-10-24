@@ -21,39 +21,41 @@
             </button>
         </div>
         <dialog id="modal_select_file" class="modal_window">
-            <h3 class="h3-text modal_window_title title">Выберите файл, по которому будет создаваться чарт</h3>
-            {% if files %}
-                <div class="elem_list">
-                    {% for el in files %}
-                    <button class="elem_list_btn" onclick="selectFile(this, '{{ el.file_id }}' )">
-                        <h3 class="text-h3 text-black">{{ el.name }}</h3>
+            <div class="modal_window_content">
+                <h3 class="h3-text modal_window_title title">Выберите файл, по которому будет создаваться чарт</h3>
+                {% if files %}
+                    <div class="elem_list">
+                        {% for el in files %}
+                        <button class="elem_list_btn" onclick="selectFile(this, '{{ el.file_id }}' )">
+                            <h3 class="text-h3 text-black">{{ el.name|truncatechars_html:30 }}</h3>
+                        </button>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <h3 class="text-h3 text-dark-grey none_text">У вас нет загруженных файлов</h3>
+                {% endif %}
+    
+                <h3 class="h3-text modal_window_title title">Попробуйте встроенные файлы</h3>
+                {% if default_files %}
+                    <div class="elem_list elem_list_end">
+                        {% for el in default_files %}
+                        <button class="elem_list_btn" onclick="selectFile(this, 'default{{ el.file_id }}')">
+                            <h3 class="text-h3 text-black">{{ el.name|truncatechars_html:30 }}</h3>
+                        </button>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <h3 class="text-h3 text-dark-grey none_text none_text_end">К сожалению сейчас встроенные файлы недоступны</h3>
+                {% endif %}
+                
+                <div class="modal_window_btn">
+                    <button class="btn_add btn_close_modal" id="btn_close_modal">
+                        <h3 class="text-black">Отменить</h3>
                     </button>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <h3 class="text-h3 text-dark-grey none_text">У вас нет загруженных файлов</h3>
-            {% endif %}
-
-            <h3 class="h3-text modal_window_title title">Попробуйте встроенные файлы</h3>
-            {% if default_files %}
-                <div class="elem_list">
-                    {% for el in default_files %}
-                    <button class="elem_list_btn" onclick="selectFile(this, 'default{{ el.file_id }}')">
-                        <h3 class="text-h3 text-black">{{ el.name }}</h3>
+                    <button class="btn_add btn_select_file" id="btn_select_file">
+                        <h3 class="text-white">Выбрать</h3>
                     </button>
-                    {% endfor %}
                 </div>
-            {% else %}
-                <h3 class="text-h3 text-dark-grey none_text">К сожалению сейчас встроенные файлы недоступны</h3>
-            {% endif %}
-            
-            <div class="modal_window_btn">
-                <button class="btn_add" id="btn_select_file">
-                    <h3 class="text-white">Выбрать</h3>
-                </button>
-                <button class="btn_add btn_close_modal" id="btn_close_modal">
-                    <h3 class="text-black">Отменить</h3>
-                </button>
             </div>
         </dialog>
         <script>

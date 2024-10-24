@@ -5,5 +5,5 @@ urlpatterns = [
     path('', views.render_home_page, name='home'),
     path('files/', include('files.urls')),
     path('charts/', include('charts.urls')),
-    path('dashboards/', include('dashboards.urls'))
+    path('dashboards/', include('dashboards.urls')),
 ]

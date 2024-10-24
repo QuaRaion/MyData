@@ -22,11 +22,11 @@
         </div>
         {% if files %}
         <div class="elem_list">
-                {% for el in files %}
+            {% for el in files %}
                 <button class="elem_list_btn">
-                    <h3 class="text-h3 text-black">{{ el.name }}</h3>
+                    <h3 class="text-h3 text-black">{{ el.name|truncatechars_html:30 }}</h3>
                 </button>
-                {% endfor %}
+            {% endfor %}
         </div>
         {% else %}
             <h3 class="text-h3 text-dark-grey">У вас пока нет загруженных файлов</h3>

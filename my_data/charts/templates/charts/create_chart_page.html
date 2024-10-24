@@ -10,11 +10,167 @@
 {% block active2 %}active_btn{% endblock %}
 
 {% block content %}
+{% load static %}
 
-<section class="create_chart">
-    <div class="container">
-        <div class="title_with_btn">
-            <h2 class="text-h2 title_with_btn_text">Создание чарта {{ file.name }}</h2>
+<section class="work_section">
+        <div class="create_chart_page">
+            <div class="left">
+                <div class="search_field">
+                    <div class="input_container">
+                        <input type="search" maxlength="30" placeholder="найти столбец" class="text-h4 text-black search_input">
+                        <button class="search_btn"><img src="{% static 'charts/img/search_icon.svg' %}" alt="Поиск"></button>
+                    </div>
+                </div>
+
+                <div class="columns_list" id="item_list">
+                    <h3 class="text-h3 text-dark-grey list_title">столбцы</h3>
+                    <button class="columns_list_elem" draggable="true">
+                        <h3 class="text-h3 text-black">Имя</h3>
+                    </button>
+                    <button class="columns_list_elem" draggable="true">
+                        <h3 class="text-h3 text-black">Фамилия</h3>
+                    </button>
+                    <button class="columns_list_elem" draggable="true">
+                        <h3 class="text-h3 text-black">Отчество</h3>
+                    </button>
+                    <button class="columns_list_elem" draggable="true">
+                        <h3 class="text-h3 text-black">Адрес проживания</h3>
+                    </button>
+                    <button class="columns_list_elem" draggable="true">
+                        <h3 class="text-h3 text-black">Дата рождения</h3>
+                    </button>
+                    <button class="columns_list_elem" draggable="true">
+                        <h3 class="text-h3 text-black">Семейное положение</h3>
+                    </button>
+                </div>
+
+                <div class="function_list" id="function_list">
+                    <h3 class="text-h3 text-dark-grey list_title">параметры</h3>
+                    <button class="func">
+                        <h3 class="text-h3 text-black">Сортировка</h3>
+                        <img class="func_icon" src="{% static 'charts/img/sorting_icon.svg' %}">
+                    </button>
+                    <button class="func">
+                        <h3 class="text-h3 text-black">Фильтры</h3>
+                        <img class="func_icon" src="{% static 'charts/img/filters_icon.svg' %}">
+                    </button>
+                </div>
+
+                <script>
+                    const items = document.querySelectorAll('.columns_list_elem');
+                    const dropArea = document.getElementById('dropArea');
+                
+                    // Переменная для хранения перетаскиваемого элемента
+                    let draggedItem = null;
+                
+                    items.forEach(item => {
+                      item.addEventListener('dragstart', (e) => {
+                        draggedItem = item;
+                        item.classList.add('dragging');
+                        e.dataTransfer.setData('text/plain', e.target.innerText);
+                      });
+                
+                      item.addEventListener('dragend', () => {
+                        draggedItem.classList.remove('dragging');
+                        draggedItem = null;
+                      });
+                    });
+                
+                    dropArea.addEventListener('dragover', (e) => {
+                      e.preventDefault();
+                      dropArea.classList.add('drag-over');
+                    });
+                
+                    dropArea.addEventListener('dragleave', () => {
+                      dropArea.classList.remove('drag-over');
+                    });
+                
+                    dropArea.addEventListener('drop', (e) => {
+                      e.preventDefault();
+                      dropArea.classList.remove('drag-over');
+                
+                      const data = e.dataTransfer.getData('text/plain');
+                      const newElement = document.createElement('div');
+                      newElement.textContent = data;
+                      newElement.classList.add('dropped-item');
+                      dropArea.appendChild(newElement);
+                
+                      if (draggedItem) {
+                        draggedItem.remove();
+                      }
+                    });
+                  </script>
+            </div>
+
+            <div class="right">
+                <div class="right_header">
+                    <div class="diagram_type">
+                        <h3 class="text-h3 text-dark-grey">тип представления</h3>
+                        <div class="select_area">
+                            <img src="{% static 'charts/img/bar_chart_icon.svg' %}">
+                            <select id="select_diagram_type" class="select_diagram_type text-h3 text-black">
+                                <option value="" selected>Линейная диаграмма</option>
+                                <option value="">Столбчатая диаграмма</option>
+                                <option value="">Точечная диаграмма</option>
+                                <option value="">Накопительная диаграмма с областями</option>
+                            </select>
+                            <img src="{% static 'charts/img/drop_list_icon.svg' %}">
+                        </div>
+                        <span id="hidden-text" style="visibility: hidden; position: absolute; white-space: nowrap;"></span>
+                    </div>
+                    <div class="save_diagram">
+                        <button class="btn_export">
+                            <img class="btn_export_img" src="{% static 'charts/img/export_file.svg' %}" alt="Экспорт чарта">
+                        </button>
+                        <button class="btn_save">
+                            <h3 class="text-h3 text-white">сохранить</h3>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- скрипт для корректного отображения <select> 
+                    (размер поля изменяется в зависимости от длины текста) -->
+                <script>
+                    const selectElement = document.getElementById('select_diagram_type');
+                    const hiddenText = document.getElementById('hidden-text');
+                    
+                    function setSelectWidth() {
+                        hiddenText.innerText = selectElement.options[selectElement.selectedIndex].text;
+                        
+                        const width = hiddenText.clientWidth + 8;
+                        selectElement.style.width = `${width}px`;
+                    }
+                    
+                    setSelectWidth();
+                    selectElement.addEventListener('change', setSelectWidth);
+                </script>
+                
+                <!-- окно построения чарта -->
+                <div class="chart_preview">
+                    <div class="chart_preview_top">
+                        <div class="y_axes">
+                            <p>y y</p>
+                            <p>y y</p>
+                            <p>y y</p>
+                            <p>y y</p>
+                            <p>y y</p>
+                            <p>y y</p>
+                            <p>y y</p>
+                        </div>
+                        <div class="plotly_figure">
+                            <p>asd</p>
+                            <p>asd</p>
+                            <p>asd</p>
+                            <p>asd</p>
+                            <p>asd</p>
+                        </div>
+                    </div>
+                    <div class="x_axes">
+                        <p> x x x x x x x x x x x x x x x x
+                             x x x x x x x x x x x x x x</p>
+                    </div>
+                </div>
+            </div>
         </div>
 </section>
 

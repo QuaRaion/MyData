@@ -6,9 +6,6 @@ from my_data import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
-    path('files/', include('files.urls')),
-    path('charts/', include('charts.urls')),
-    path('dashboards/', include('dashboards.urls'))
 ]
 
 if settings.DEBUG:

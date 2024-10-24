@@ -16,3 +16,5 @@ class NewChart(DetailView):
     # def get_queryset(self):
     #     return File.objects.filter(user=user)
 
+def render_test_page(request):
+    return render(request, 'charts/test.html')

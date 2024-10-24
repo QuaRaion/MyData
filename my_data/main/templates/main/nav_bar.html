@@ -20,7 +20,7 @@
             <div class="nav">
                 <div class="left_btn">
                     <a href="{% url 'home' %}"><img src="{% static 'main/img/logo_white.svg' %}" alt="Logo"
-                            height="35px" class="logo"></a>
+                            height="30px" class="logo"></a>
                     <a class="nav_bar_btn" href="{% url 'files' %}">
                         <img src="{% static 'main/img/files.svg' %}" alt="" class="nav_bar_btn_img">
                         <h3 class="text-h3 text-white_nav {% block active1 %}{% endblock %}">Файлы</h3>
@@ -34,9 +34,9 @@
                         <h3 class="text-h3 text-white_nav {% block active3 %}{% endblock %}">Дашборды</h3>
                     </a>
                 </div>
-                <div class="profile_btn">
+                <div class="right_btn">
                     <button class="nav_bar_btn dialoge_btn" id="open_dlg_btn">
-                        <img src="{% static 'main/img/profile.svg' %}" alt="" class="nav_bar_btn_profil">
+                        <img src="{% static 'main/img/profile.svg' %}" height="22px" alt="Профиль" class="nav_bar_btn_profil">
                     </button>
                 </div>
             </div>

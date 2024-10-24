@@ -18,9 +18,29 @@ button {
   cursor: pointer;
 }
 
+input[class] {
+  border-style: none;
+  border: none;
+}
+
 a {
   all: unset;
   cursor: pointer;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+}
+
+select::-ms-expand {
+  display: none;
 }
 
 body {
@@ -88,9 +108,37 @@ title {
   color: var(--dark-grey-color);
 }
 
+
+/* стили для скролла */
+*::-webkit-scrollbar {
+  width: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--grey-color);
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--dark-grey-color);
+}
+
 .header {
   background-color: var(--black-color);
-  margin-bottom: 20px;
+}
+
+section {
+  padding-top: 20px;
+  background-color: var(--white-color);
+}
+
+.work_section {
+  padding: 0;
+  background-color: var(--white-color);
 }
 
 .container {
@@ -147,4 +195,14 @@ title {
 
 .nav_bar_btn_img:hover {
   transform: scale(1.05);
+}
+
+.nav_bar_btn_profil {
+  cursor: pointer;
+  max-height: 25px;
+  transition: .3s ease;
+}
+
+.nav_bar_btn_profil:hover {
+  transform: scale(1.1);
 }

@@ -69,10 +69,17 @@
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 30px;
-  background-color: white;
+  max-width: 600px;
+  background-color: var(--white-color);
   border: 1px solid var(--grey-color);
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal_window[open] .modal_window_content {
+  max-height: 400px;
+  max-height: 280px;
+  position: relative;
 }
 
 .title {
@@ -80,7 +87,18 @@
   padding-bottom: 10px;
 }
 
+.none_text_end {
+  padding-bottom: 50px;
+}
+
+.elem_list_end {
+  padding-bottom: 50px;
+}
+
 .modal_window_btn {
+  position: sticky;
+  bottom: 0;
+  right: 0;
   display: flex;
   justify-content: end;
   flex-direction: row;
@@ -88,10 +106,284 @@
 }
 
 .btn_close_modal {
-  margin-left: 20px;
+  padding: 6px 10px;
   background-color: var(--grey-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.btn_select_file {
+  padding: 6px 10px;
+  margin-left: 20px;
+  box-shadow: 0 4px 10px rgba(3, 131, 245, 0.2);
 }
 
 .selected_file {
   border-color: var(--black-color);
 }
+
+/* СТРАНИЦА СОЗДАНИЯ ЧАРТА */
+.create_chart_page {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 55px);
+}
+
+.left {
+  padding: 10px 8px;
+  height: 100%;  
+  max-width: 250px;
+  /* height: 100%; */
+  max-height: calc(100vh - 55px);
+  flex: 1;
+  border-right: 2px solid var(--grey-color);
+  overflow: scroll;
+}
+
+.search_field {
+  position: relative;
+  border-width: 3px;
+  border-color: var(--black-color);
+  padding-bottom: 10px;
+}
+
+.input_container {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--grey-color);
+  border-radius: 8px;
+  padding: 6px 8px;
+  transition: .3s ease;
+}
+
+.search_input {
+  border: none;
+  flex-grow: 1;
+}
+
+.search_input:focus {
+  outline: none;
+  border: none;
+}
+
+.search_input::placeholder {
+  color: var(--dark-grey-color);
+  font-family: 'Onest';
+  font-weight: 500;
+}
+
+.search_btn {
+  border: none;
+  transition: .15s ease;
+}
+
+.search_btn:hover {
+  transform: scale(1.1);
+}
+
+.search_btn {
+  background: none;
+  margin-left: 5px;
+}
+
+.search_btn img {
+  width: 15px;
+  height: auto;
+}
+
+.list_title {
+  margin-left: 10px;
+}
+
+.columns_list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 4px;
+  padding-bottom: 10px;
+}
+
+.columns_list_elem {
+  display: flex;
+  align-items: start;
+  border-color: var(--grey-color);
+  border-width: 1px;
+  border-radius: 8px;
+  padding: 6px 8px;
+  overflow: hidden;
+  white-space: nowrap;
+
+  cursor: move;
+  transition: .3s ease;
+}
+
+.columns_list_elem:hover {
+  border-color: var(--black-color);
+}
+
+.columns_list_elem .draggable .dragging {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.function_list {
+  /* margin-top: ; */
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.func {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-color: var(--grey-color);
+  border-width: 1px;
+  border-radius: 8px;
+  padding: 6px 8px;
+  overflow: hidden;
+  white-space: nowrap;
+
+}
+
+.func:hover {
+  border-color: var(--black-color);
+}
+
+.func_icon {
+  width: 18px;
+  transition: .3s ease;
+}
+
+.func_icon:hover {
+  transform: scale(1.1);
+} 
+
+/* стилизация рамки, 
+когда столбец находится над полем ввода */
+.drag-over {
+  background-color: var(--grey-color);
+  border: 2px dashed var(--dark-grey-color);
+}
+
+.right {
+  background-color: var(--white-color);
+  padding: 10px 8px;
+  padding-left: 10px;
+  flex: 2;
+  height: 100%;
+}
+
+.right_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-height: 28px;
+}
+
+.diagram_type {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.select_area {
+  position: relative;
+  margin-left: 10px;
+  padding: 4px 8px;
+  border: 1px solid var(--dark-grey-color);
+  border-radius: 8px;
+  transition: .3s ease;
+}
+
+.select_area:hover {
+  border-color: var(--accent-color);
+}
+
+.select_diagram_type {
+  appearance: none; 
+  -webkit-appearance: none;
+  margin-left: 5px;
+  background-color: transparent;
+  border: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.save_diagram {
+  display: flex;
+  justify-content: end;
+}
+
+.btn_export {
+  background-color: transparent;
+  border: 1px solid var(--dark-grey-color);
+  border-radius: 8px;
+  display: flex;
+  justify-self: center;
+  align-items: center;
+  margin-right: 10px;
+  transition: .3s ease;
+}
+
+.btn_export:hover {
+  transform: scale(1.1);
+}
+
+.btn_export_img {
+  padding: 5px;
+  max-height: 28px;
+}
+
+.btn_save {
+  background-color: var(--accent-color);
+  border: none;
+  border-radius: 8px;
+  padding: 4px 8px;
+  transition: .3s ease;
+}
+
+.btn_save:hover {
+  transform: scale(1.05);
+}
+
+.chart_preview {
+  width: 100%;
+  margin-top: 30px;
+  background-color: var(--black-color);
+}
+
+/* ЗОНА ОТОБРАЖЕНИЯ ГРАФИКА */
+.chart_preview {
+  margin-top: 30px;
+  /* padding-left: 20px;
+  padding-right: 20px; */
+  height: 80%;
+}
+
+.chart_preview_top {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
+.y_axes {
+  width: 6%;
+  background-color: rgb(223, 187, 255);
+  padding-top: 15%;
+}
+
+.plotly_figure {
+  flex: 1;
+  background-color: rgb(252, 255, 203)
+}
+
+.x_axes {
+  width: 100%;
+  background-color: rgb(255, 228, 155);
+  padding-left: 30%;
+}
+
+
