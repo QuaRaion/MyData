@@ -25,7 +25,12 @@
                 <div class="columns_list" id="item_list">
                     <h3 class="text-h3 text-dark-grey list_title">столбцы</h3>
                     <button class="columns_list_elem" draggable="true">
-                        <h3 class="text-h3 text-black">Имя</h3>
+                        <h3 id="object1" class="text-h3 text-black objects" draggable="true" 
+                            ondragstart="drag(event)" data-column="" ondragend="drag_end(event)">Имя</h3>
+                    </button>
+                    <button class="columns_list_elem" draggable="true">
+                        <h3 id="object1" class="text-h3 text-black objects" draggable="true" 
+                            ondragstart="drag(event)" data-column="" ondragend="drag_end(event)">Никнейм</h3>
                     </button>
                     <button class="columns_list_elem" draggable="true">
                         <h3 class="text-h3 text-black">Фамилия</h3>
@@ -60,7 +65,6 @@
                     const items = document.querySelectorAll('.columns_list_elem');
                     const dropArea = document.getElementById('dropArea');
                 
-                    // Переменная для хранения перетаскиваемого элемента
                     let draggedItem = null;
                 
                     items.forEach(item => {
@@ -148,27 +152,50 @@
                 <!-- окно построения чарта -->
                 <div class="chart_preview">
                     <div class="chart_preview_top">
-                        <div class="y_axes">
-                            <p>y y</p>
-                            <p>y y</p>
-                            <p>y y</p>
-                            <p>y y</p>
-                            <p>y y</p>
-                            <p>y y</p>
-                            <p>y y</p>
+                        <div id="y-axis" class="y_axes" ondrop="drop(event, 'Y')" ondragover="allowDrop(event)">
+                            <h4 class="text-h4 text-black"><b>Y</b> - перетащите данные</h4> 
                         </div>
                         <div class="plotly_figure">
-                            <p>asd</p>
-                            <p>asd</p>
-                            <p>asd</p>
-                            <p>asd</p>
-                            <p>asd</p>
+                            <!-- тут будет строиться график -->
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>                            
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>
+                             <p>визуализация - - - визуализация - - - визуализация</p>                          
                         </div>
                     </div>
-                    <div class="x_axes">
-                        <p> x x x x x x x x x x x x x x x x
-                             x x x x x x x x x x x x x x</p>
+                    <div id="x-axis" class="x_axes" ondrop="drop(event, 'X')" ondragover="allowDrop(event)">
+                        <h4 class="text-h4 text-black"><b>X</b> - перетащите данные</h4> 
                     </div>
+                    <script>
+                        function allowDrop(event) {
+                          event.preventDefault();
+                        }
+                      
+                        function drag(event) {
+                          event.dataTransfer.setData("text", event.target.getAttribute("data-column"));
+                        }
+                      
+                        function drop(event, axis) {
+                          event.preventDefault();
+                          let column = event.dataTransfer.getData("text");
+                          document.getElementById(`${axis.toLowerCase()}-axis`).textContent = `${column}`;
+                        }
+                      </script>
                 </div>
             </div>
         </div>

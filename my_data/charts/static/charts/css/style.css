@@ -206,6 +206,7 @@
 .columns_list_elem {
   display: flex;
   align-items: start;
+  background-color: transparent;
   border-color: var(--grey-color);
   border-width: 1px;
   border-radius: 8px;
@@ -222,7 +223,7 @@
 }
 
 .columns_list_elem .draggable .dragging {
-  background-color: rgba(0, 0, 0, 0.5);
+  
 }
 
 .function_list {
@@ -352,38 +353,56 @@
 .chart_preview {
   width: 100%;
   margin-top: 30px;
-  background-color: var(--black-color);
+  background-color: transparent;
 }
 
 /* ЗОНА ОТОБРАЖЕНИЯ ГРАФИКА */
 .chart_preview {
-  margin-top: 30px;
-  /* padding-left: 20px;
-  padding-right: 20px; */
-  height: 80%;
+  /* margin-top: 30px;
+  height: 80%; */
+  position: relative;
 }
 
 .chart_preview_top {
+  padding-bottom: 20px;
   display: flex;
   justify-content: center;
-  height: 100%;
+  align-items: center;
+  min-height: calc(100vh - 300px);
 }
 
 .y_axes {
-  width: 6%;
-  background-color: rgb(223, 187, 255);
-  padding-top: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  background-color: transparent; 
+  padding: 20px 10px;
+  margin-left: 40px;
+  border: 1px dashed var(--dark-grey-color);
+  border-radius: 8px;
 }
 
 .plotly_figure {
   flex: 1;
-  background-color: rgb(252, 255, 203)
+  background-color: transparent;
+  border: 1px solid var(--black-color);
+  border-radius: 8px;
+  padding: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .x_axes {
-  width: 100%;
-  background-color: rgb(255, 228, 155);
-  padding-left: 30%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent; 
+  padding: 10px 20px;
+  border: 1px dashed var(--dark-grey-color);
+  border-radius: 8px;
 }
-
-
