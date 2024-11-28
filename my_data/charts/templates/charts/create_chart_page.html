@@ -24,29 +24,13 @@
 
                 <div class="columns_list" id="item_list">
                     <h3 class="text-h3 text-dark-grey list_title">столбцы</h3>
-                    <button class="columns_list_elem" draggable="true">
-                        <h3 id="object1" class="text-h3 text-black objects" draggable="true" 
-                            ondragstart="drag(event)" data-column="" ondragend="drag_end(event)">Имя</h3>
-                    </button>
-                    <button class="columns_list_elem" draggable="true">
-                        <h3 id="object1" class="text-h3 text-black objects" draggable="true" 
-                            ondragstart="drag(event)" data-column="" ondragend="drag_end(event)">Никнейм</h3>
-                    </button>
-                    <button class="columns_list_elem" draggable="true">
-                        <h3 class="text-h3 text-black">Фамилия</h3>
-                    </button>
-                    <button class="columns_list_elem" draggable="true">
-                        <h3 class="text-h3 text-black">Отчество</h3>
-                    </button>
-                    <button class="columns_list_elem" draggable="true">
-                        <h3 class="text-h3 text-black">Адрес проживания</h3>
-                    </button>
-                    <button class="columns_list_elem" draggable="true">
-                        <h3 class="text-h3 text-black">Дата рождения</h3>
-                    </button>
-                    <button class="columns_list_elem" draggable="true">
-                        <h3 class="text-h3 text-black">Семейное положение</h3>
-                    </button>
+                    {% for column in columns %}
+                        <button class="columns_list_elem" draggable="true">
+                            <h3 class="text-h3 text-black objects" draggable="true" 
+                                ondragstart="drag(event)" data-column="{{ column }}" 
+                                ondragend="drag_end(event)">{{ column }}</h3>
+                        </button>
+                    {% endfor %}
                 </div>
 
                 <div class="function_list" id="function_list">
@@ -183,17 +167,22 @@
                     </div>
                     <script>
                         function allowDrop(event) {
-                          event.preventDefault();
+                            event.preventDefault();
                         }
                       
                         function drag(event) {
-                          event.dataTransfer.setData("text", event.target.getAttribute("data-column"));
+                            event.dataTransfer.setData("text", event.target.getAttribute("data-column"));
                         }
                       
                         function drop(event, axis) {
-                          event.preventDefault();
-                          let column = event.dataTransfer.getData("text");
-                          document.getElementById(`${axis.toLowerCase()}-axis`).textContent = `${column}`;
+                            event.preventDefault();
+                            let column = event.dataTransfer.getData("text");
+                            document.getElementById(`${axis.toLowerCase()}-axis`).textContent = `${column}`;
+                            // Отправка данных через AJAX в Dash
+                            const dropdown = document.querySelector(`#${axis.toLowerCase()}-axis select`);
+                            dropdown.value = column;
+                            dropdown.dispatchEvent(new Event("change"));
+
                         }
                       </script>
                 </div>

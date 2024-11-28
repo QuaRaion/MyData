@@ -15,7 +15,7 @@
     <div class="container">
         <div class="title_with_btn">
             <h2 class="text-h2 title_with_btn_text">Мои чарты</h2>
-            <button class="btn_add" id="btn_add_file">
+            <button class="btn_add" id="btn_add_chart">
                 <img src="{% static 'main/img/white_plus.svg' %}" alt="" class="btn_add_img">
                 <h3 class="text-h3 text-white">чарт</h3>
             </button>
@@ -59,7 +59,7 @@
             </div>
         </dialog>
         <script>
-            btn_add_file.addEventListener('click', () => {
+            btn_add_chart.addEventListener('click', () => {
                 modal_select_file.showModal()
             })
 

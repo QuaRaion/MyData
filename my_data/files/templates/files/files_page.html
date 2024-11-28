@@ -15,11 +15,61 @@
     <div class="container">
         <div class="title_with_btn">
             <h2 class="text-h2 title_with_btn_text">Мои файлы</h2>
-            <button class="btn_add">
+            <button class="btn_add" id="btn_add_file">
                 <img src="{% static 'main/img/white_plus.svg' %}" alt="" class="btn_add_img">
                 <h3 class="text-h3 text-white">файл</h3>
-            </button>
-        </div>
+            </button> 
+        </div>           
+        <dialog id="modal_select_file" class="modal_window">
+            <div class="modal_window_content">
+                <h3 class="h3-text modal_window_title title">Загрузка нового файла</h3>
+                <form id="file_upload_form" class="file_upload_form" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div>
+                        <label for="file_input" class="text-h3 text-black">Выберите файл</label>
+                        <input type="file" id="file_input" class="file_input" name="file" accept=".csv" required>
+                    </div>
+                    <div class="sep_field">
+                        <label for="separator_input" class="text-h3 text-black sep_input">
+                            Разделитель
+                        </label>
+                        <div class="input_container">
+                            <input type="text" class="sep_input" id="separator_input" 
+                            maxlength="5" name="separator" placeholder="" required>
+                        </div>
+                    </div>                   
+                    <div class="checkbox_has_header">
+                        <input type="checkbox" id="has_header" name="has_header"> 
+                        <label for="has_header" class="text-h3 text-black sep_input">
+                            файл содержит заголовки
+                        </label>
+                    </div>
+                </form>        
+                
+                <div class="modal_window_btn">
+                    <button type="submit" class="btn_add btn_close_modal" id="btn_close_modal">
+                        <h3 class="text-black">Отменить</h3>
+                    </button>
+                    <button class="btn_add btn_preprocess_file" id="btn_preprocess_file">
+                        <h3 class="text-white">Далее</h3>
+                    </button>
+                </div>
+            </div>
+        </dialog>
+        <script>
+            btn_add_file.addEventListener('click', () => {
+                modal_select_file.showModal()
+            })
+
+            btn_close_modal.addEventListener('click', () => {
+                modal_select_file.close()
+            })
+
+            btn_preprocess_file.addEventListener('click', () => {
+                file_upload_form.submit();
+            });
+        </script>
+
         {% if files %}
         <div class="elem_list">
             {% for el in files %}

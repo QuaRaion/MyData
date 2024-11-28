@@ -1,4 +1,5 @@
-from django.urls import path
+from django.urls import path, include
+from django_plotly_dash.views import add_to_session
 from . import views
 from .views import NewChart
 
