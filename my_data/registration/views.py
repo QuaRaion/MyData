@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model, authenticate, login
 from .forms import RegisterUserForm, LoginUserForm
 
-User = get_user_model()
 
+User = get_user_model()
 
 def render_log_in_page(request):
     form = LoginUserForm()
@@ -12,10 +12,6 @@ def render_log_in_page(request):
         form = LoginUserForm(request.POST)
 
         if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-
-            # user = authenticate(request, username=email, password=password)
             user = authenticate(request, username=form.cleaned_data['email'], 
                                 password=form.cleaned_data['password'])
 

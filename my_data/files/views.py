@@ -1,41 +1,57 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
-from .models import File
+from django.urls import reverse
 import pandas as pd
 from django.contrib.auth.decorators import login_required
+
+from .models import File
+from .forms import UploadFileForm
+
 
 @login_required
 def render_files_page(request):
     user_files = File.objects.filter(user=request.user).order_by('-created_time')
     public_files = File.objects.filter(is_public=True).order_by('-created_time')
     
-    return render(request, 'files/files_page.html', {'user_files': user_files, 'public_files': public_files})
+    form = UploadFileForm()
 
-
-
-def upload_file(request):
-    if request.method == 'POST' and request.FILES['file']:
-        file = request.FILES['file']
-        separator = request.POST.get('separator')
-        has_header = 'has_header' in request.POST
-
-        try:
-            df = pd.read_csv(file, sep=separator, header=0 if has_header else None)
-            file_obj = File.objects.create(
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploaded_file = form.cleaned_data['file']
+            file_instance = File.objects.create(
+                name=form.cleaned_data.get('name') or uploaded_file.name,
+                path=uploaded_file,
                 user=request.user,
-                name=file.name,
-                path=file,
-                separator=separator,
-                has_header=has_header
+                separator=form.cleaned_data['separator'],
+                has_header=form.cleaned_data['has_header'],
             )
-            file_obj.save()
-
-            return redirect('rename_columns', file_id=file_obj.file_id)
-
-        except Exception as e:
-            return HttpResponse(f"Ошибка загрузки файла: {str(e)}", status=400)
+            
+            return redirect(reverse('edit_file', args=[file_instance.file_id]))
     
-    return render(request, 'files/upload_file.html')
+    return render(request, 'files/files_page.html', {
+        'user_files': user_files, 
+        'public_files': public_files,
+        'form': form,
+    })
+
+@login_required
+def render_edit_file_page(request, file_id):
+    file_instance = File.objects.get(file_id=file_id)
+
+    # Логика обработки файла
+    file_path = file_instance.path.path
+    df = pd.read_csv(file_path, sep=file_instance.separator, header=0 if file_instance.has_header else None)
+
+    # Пример отображения первых строк файла
+    preview = df.head().to_html()
+
+    return render(request, 'files/edit_file.html', {
+        'file': file_instance,
+        'preview': preview,
+    })
+
+
 
 def rename_columns(request, file_id):
     file_obj = File.objects.get(file_id=file_id)

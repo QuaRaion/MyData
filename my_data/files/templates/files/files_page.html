@@ -25,96 +25,79 @@
                 <h3 class="h3-text modal_window_title title">Загрузка нового файла</h3>
                 <form id="file_upload_form" class="file_upload_form" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <!-- <div>
-                        <label for="file_input" class="text-h3 text-black">Выберите файл</label>
-                        <input type="file" id="file_input" class="file_input" name="file" accept=".csv" required>
-                    </div> -->
+                    {{ form.non_field_errors }}
+                    <div class="input_file_name">
+                        {{ form.name }}
+                    </div>
+
                     <div class="content">
                         <div class="actions">
-                            <label for="file" class="button upload-btn" id="file-label">Выбрать файл
-                                <input hidden type="file" accept=".csv" id="file" onchange="updateFileName()">
+                            {{ form.file }}    
+                            <label for="id_file" class="button upload-btn" id="file-label">
+                                Выбрать файл
                             </label>
                         </div>
                     </div>
                     <div class="sep_field">
-                        <label for="separator_input" class="text-h3 text-black sep_input">
-                            Разделитель
-                        </label>
-                        <div class="input_container">
-                            <input type="text" class="sep_input" id="separator_input" 
-                            maxlength="5" name="separator" placeholder="" required>
+                        <label for="separator" class="text-h3 text-black">Разделитель</label>
+                        <div class="sep_input_area">
+                            {{ form.separator }}
                         </div>
-                    </div>                   
+                    </div>                     
+                    
                     <div class="checkbox_has_header">
-                        <input type="checkbox" id="has_header" name="has_header"> 
-                        <label for="has_header" class="text-h3 text-black sep_input">
-                            файл содержит заголовки
-                        </label>
+                        {{ form.has_header }}
+                        <label for="id_has_header" class="text-h3 text-black">Содержит заголовки</label>
                     </div>
-                    <script>
-                        // Функция для обновления имени выбранного файла
-                        function updateFileName() {
-                            var fileInput = document.getElementById("file");
-                            var fileLabel = document.getElementById("file-label");
-                    
-                            var fileName = fileInput.files[0] ? fileInput.files[0].name : "Choose File";
-                            fileLabel.textContent = fileName;
-                        }
-                    
-                        // Открытие модального окна при нажатии на кнопку "Добавить файл"
-                        document.getElementById('btn_add_file').addEventListener('click', () => {
-                            document.getElementById('modal_select_file').showModal();
-                        });
-                    
-                        // Закрытие модального окна
-                        document.getElementById('btn_close_modal').addEventListener('click', () => {
-                            document.getElementById('modal_select_file').close();
-                        });
-                    
-                        // Отправка формы при нажатии кнопки "Далее"
-                        document.getElementById('btn_preprocess_file').addEventListener('click', () => {
-                            var form = document.getElementById('file_upload_form');
-                    
-                            // Проверка, что файл выбран и разделитель указан
-                            var fileInput = document.getElementById('file');
-                            var separatorInput = document.getElementById('separator_input');
-                            
-                            if (fileInput.files.length === 0) {
-                                alert('Пожалуйста, выберите файл.');
-                                return;
-                            }
-                            
-                            if (separatorInput.value.trim() === '') {
-                                alert('Пожалуйста, укажите разделитель.');
-                                return;
-                            }
-                    
-                            form.submit(); // Отправляем форму
-                        });
-                    </script>
+
+                    <div class="modal_window_btn">
+                        <button type="button" class="btn_add btn_close_modal" id="btn_close_modal">
+                            <h3 class="text-black">Отменить</h3>
+                        </button>
+                        <button type="button" class="btn_add btn_preprocess_file" id="btn_preprocess_file">
+                            <h3 class="text-white">Далее</h3>
+                        </button>
+                    </div>
                 </form>        
-                
-                <div class="modal_window_btn">
-                    <button type="submit" class="btn_add btn_close_modal" id="btn_close_modal">
-                        <h3 class="text-black">Отменить</h3>
-                    </button>
-                    <button class="btn_add btn_preprocess_file" id="btn_preprocess_file">
-                        <h3 class="text-white">Далее</h3>
-                    </button>
-                </div>
             </div>
         </dialog>
         <script>
-            btn_add_file.addEventListener('click', () => {
-                modal_select_file.showModal()
-            })
+            document.getElementById('btn_add_file').addEventListener('click', () => {
+                document.getElementById('modal_select_file').showModal();
+            });
 
-            btn_close_modal.addEventListener('click', () => {
-                modal_select_file.close()
-            })
+            document.getElementById('btn_close_modal').addEventListener('click', () => {
+                document.getElementById('modal_select_file').close();
+            });
 
-            btn_preprocess_file.addEventListener('click', () => {
-                file_upload_form.submit();
+            document.getElementById('id_file').addEventListener('change', function () {
+                const fileInput = this;
+                const fileLabel = document.getElementById('file-label');
+        
+                if (fileInput.files.length > 0) {
+                    const fileName = fileInput.files[0].name;
+                    fileLabel.textContent = fileName;
+                } else {
+                    fileLabel.textContent = 'Выбрать файл';
+                }
+            });
+
+            document.getElementById('btn_preprocess_file').addEventListener('click', () => {
+                const form = document.getElementById('file_upload_form');
+                const fileInput = form.querySelector('input[type="file"]');
+                const separatorInput = form.querySelector('input[name="separator"]');
+
+                if (!fileInput.value) {
+                    alert('Пожалуйста, выберите файл.');
+                    return;
+                }
+
+                if (!separatorInput.value.trim()) {
+                    alert('Пожалуйста, укажите разделитель.');
+                    return;
+                }
+
+                form.submit();
             });
         </script>
 
@@ -146,5 +129,6 @@
         {% endif %}   
     </div>
 </section>
+
 
 {% endblock %}

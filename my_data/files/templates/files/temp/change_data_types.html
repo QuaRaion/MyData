@@ -1,0 +1,38 @@
+{% extends 'main/nav_bar.html' %}
+
+{% block title %}Изменение типов данных{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'files/css/style.css' %}">
+{% endblock %}
+
+{% block active1 %}active_btn{% endblock %}
+
+{% block content %}
+<section class="change_data_types_section">
+    <div class="container">
+        <h2>Изменение типов данных</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <ul>
+                    {% for column in columns %}
+                        <li>
+                            <label for="dtype_{{ column }}">{{ column }}</label>
+                            <select name="{{ column }}" id="dtype_{{ column }}">
+                                <option value="str">Строка</option>
+                                <option value="int">Целое число</option>
+                                <option value="float">Число с плавающей точкой</option>
+                                <option value="bool">Логический</option>
+                            </select>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <button type="submit" class="btn btn-primary">Применить типы данных</button>
+        </form>
+        <br>
+        <a href="{% url 'save_file' file_id=file_id %}" class="btn btn-success">Сохранить файл</a>
+    </div>
+</section>
+{% endblock %}
