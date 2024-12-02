@@ -1,0 +1,72 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.field_card{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--white-color);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    width: 100%;
+    background-color: var(--white-color);
+    border-radius: 20px;
+    padding: 30px 20px;
+    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.3)
+}
+
+.title {
+  font-weight: bold;
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.sub {
+  text-align: center;
+}
+
+.sub.mb {
+  margin-bottom: 1px;
+}
+
+.form button {
+  align-self: flex-end;
+}
+
+.input, button {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 16px 10px;
+  background-color: var(--light-grey-color);
+  border-radius: 10px;
+  box-shadow: 12.5px 12.5px 10px rgba(0, 0, 0, 0.015),100px 100px 80px rgba(0, 0, 0, 0.03);
+}
+
+.create_btn {
+  margin-top: 10px;
+  background-color: var(--accent-color);
+  border: none;
+}
+
+.input:focus {
+  border: 1px solid rgb(23, 111, 211);
+}
+
+.p-policy {
+  text-align: center;
+}
+
+.error{
+  text-align: center;
+}

@@ -5,7 +5,7 @@ from my_data import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('main.urls')),
+    path('', include('registration.urls'))
 ]
 
 if settings.DEBUG:

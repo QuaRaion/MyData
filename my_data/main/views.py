@@ -1,8 +1,7 @@
 from django.shortcuts import render
-from django.shortcuts import get_object_or_404
-from files.models import File
-import pandas as pd
+from django.contrib.auth.decorators import login_required
 
+# @login_required
 def render_home_page(request):
     # file = get_object_or_404(File, file_id=1)
     # csv_data = None

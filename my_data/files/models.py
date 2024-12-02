@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from registration.models import User
 import os
 
@@ -29,6 +30,9 @@ class File(models.Model):
 
     def __str__(self):
         return self.name
+    
+    # def get_absolute_url(self):
+    #     return reverse('create_chart', kwargs={'file_id' : self.pk})
     
 class DefaultFile(models.Model):
     file_id = models.AutoField(primary_key=True)

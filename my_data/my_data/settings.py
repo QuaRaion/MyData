@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'dashboards',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     'channels',
+    'formtools',
     'dpd_static_support',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -118,6 +119,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/home/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -140,13 +147,15 @@ STATICFILES_DIR = [
     BASE_DIR / "static",
 ]
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
+MEDIA_URL = '/files/'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
-MEDIA_URL = '/files/'
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 

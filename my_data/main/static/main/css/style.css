@@ -50,10 +50,13 @@ body {
 
 :root {
   --accent-color: #0083F5;
+  --accent-bc: #024a9d;
   --black-color: #373737;
   --white-color: #fff;
   --grey-color: #ECECEC;
+  --light-grey-color: rgba(237, 237, 237, 0.611);
   --dark-grey-color: #AFAFAF;
+  --red-color: #e84e4e;
 }
 
 .text-h2 {
@@ -72,6 +75,12 @@ body {
   font-family: "Onest", sans-serif;
   font-weight: normal;
   font-size: 14px;
+}
+
+.text-h5 {
+  font-family: "Onest", sans-serif;
+  font-weight: 300;
+  font-size: 12px;
 }
 
 title {
@@ -106,6 +115,10 @@ title {
 
 .text-dark-grey {
   color: var(--dark-grey-color);
+}
+
+.text-red {
+  color: var(--red-color);
 }
 
 
@@ -149,7 +162,9 @@ section {
   margin: 0, auto;
   padding-top: 10px;
   padding-bottom: 10px;
-  max-width: 1600px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   display: flex;
   align-items: center;
   justify-content: space-between;

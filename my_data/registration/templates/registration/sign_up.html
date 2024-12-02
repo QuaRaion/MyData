@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
+    <title>Вход</title>
+    <link rel="stylesheet" href="{% static 'registration/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+<body>
+    <div class="field_card">
+        <form class="form" method="POST">
+            {% csrf_token %}
+            <p class="h1-text title">Создание аккаунта</p>
+            <p>{{ form.name }}</p>
+            <p>{{ form.email }}</p>
+            <p>{{ form.password }}</p>
+            <p>{{ form.password2 }}</p>
+            
+            <div class="error text-red teht-h3">
+                {{ form.email.errors }}
+                {{ form.password2.errors }}    
+            </div>
+
+            <span class="sub h4-text text-black">Уже есть аккаунт? 
+                <a href="{% url 'log_in' %}" class="h4-text text-accent">Войти</a>
+            </span>
+
+            <span class="p-policy">
+                <!-- <input type="checkbox" name="p-policy"> -->
+                <p class="text-h5 text-dark-grey"> При входе и регистрации 
+                    Вы принимаете условия
+                    <a href="#" class="text-accent">Пользовательского соглашения</a>, 
+                    а также предоставляете согласие на обработку и хранение
+                    персональных данных в соответствии с
+                    <a href="#" class="text-accent">Политикой обработки персональных данных</a>
+                </p>
+            </span>
+            
+            <button type="submit" class="button create_btn">
+                <h3 class="h3-text text-white">Создать</h3>
+            </button>
+    
+        </form>
+    </div>
+</body>
+
+</html>
