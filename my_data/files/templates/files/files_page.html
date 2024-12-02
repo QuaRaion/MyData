@@ -118,9 +118,9 @@
             });
         </script>
 
-        {% if files %}
+        {% if user_files %}
         <div class="elem_list">
-            {% for el in files %}
+            {% for el in user_files %}
                 <button class="elem_list_btn">
                     <h3 class="text-h3 text-black">{{ el.name|truncatechars_html:30 }}</h3>
                 </button>
@@ -129,29 +129,21 @@
         {% else %}
             <h3 class="text-h3 text-dark-grey empty_text">У вас пока нет загруженных файлов. Загрузите, чтобы начать работу</h3>
         {% endif %}
+        
         <div class="title_with_btn">
             <h2 class="text-h2 title_with_btn_text">Научитесь на подготовленных данных</h2>
         </div>
+        {% if public_files %}
         <div class="elem_list">
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">salary.csv</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">clients.csv</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">credit_risk.csv</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">drivers.csv</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">movies.csv</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">visits.csv</h3>
-            </button>
-        </div>        
+            {% for el in public_files %}
+                <button class="elem_list_btn">
+                    <h3 class="text-h3 text-black">{{ el.name|truncatechars_html:30 }}</h3>
+                </button>
+            {% endfor %}
+        </div>
+        {% else %}
+            <h3 class="text-h3 text-dark-grey empty_text">Извините, готовые файлы сейчас не доступны...</h3>
+        {% endif %}   
     </div>
 </section>
 

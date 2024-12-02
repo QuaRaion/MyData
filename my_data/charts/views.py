@@ -3,13 +3,14 @@ from django.views.generic import DetailView
 from django.db import connection
 import pandas as pd
 from django.contrib.auth.decorators import login_required
-from files.models import File, DefaultFile
+from files.models import *
 
 @login_required
 def render_charts_page (request):
-    files = File.objects.order_by('-created_time')
-    default_files = DefaultFile.objects.order_by('name')
-    return render(request, 'charts/charts_page.html', {'files':files, 'default_files':default_files})
+    user_files = File.objects.filter(user=request.user).order_by('-created_time')
+    public_files = File.objects.filter(is_public=True).order_by('-name')
+    
+    return render(request, 'charts/charts_page.html', {'user_files':user_files, 'public_files':public_files})
 
 class NewChart(DetailView):
     model = File

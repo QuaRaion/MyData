@@ -14,13 +14,15 @@ def get_file_path(instance, filename):
 
 class File(models.Model):
     file_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)    
     name = models.CharField(max_length=50)
     path = models.FileField(upload_to=get_file_path)
     separator = models.CharField(max_length=5)
     has_header = models.BooleanField()
     created_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
+    is_public = models.BooleanField(default=False)
+
 
     class Meta:
         db_table = 'files'
@@ -33,20 +35,3 @@ class File(models.Model):
     
     # def get_absolute_url(self):
     #     return reverse('create_chart', kwargs={'file_id' : self.pk})
-    
-class DefaultFile(models.Model):
-    file_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50)
-    path = models.FileField(upload_to=get_file_path)
-    separator = models.CharField(max_length=5)
-    has_header = models.BooleanField()
-    update_time = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        db_table = 'default_files'
-        managed = True
-        verbose_name = 'Встроенный файл'
-        verbose_name_plural = 'Встроенные файлы'
-
-    def __str__(self):
-        return self.name

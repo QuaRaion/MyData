@@ -6,8 +6,11 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def render_files_page(request):
-    files = File.objects.filter(user=request.user).order_by('-created_time')
-    return render(request, 'files/files_page.html', {'files':files})
+    user_files = File.objects.filter(user=request.user).order_by('-created_time')
+    public_files = File.objects.filter(is_public=True).order_by('-created_time')
+    
+    return render(request, 'files/files_page.html', {'user_files': user_files, 'public_files': public_files})
+
 
 
 def upload_file(request):

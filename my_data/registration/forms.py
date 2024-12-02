@@ -8,30 +8,30 @@ User = get_user_model()
 class LoginUserForm(forms.Form):
     email = forms.EmailField(
         max_length=50,
-        widget=forms.EmailInput(attrs={'class': 'input', 'placeholder': 'Электронная почта'})
+        widget=forms.EmailInput(attrs={'class': 'input text-black text-h3', 'placeholder': 'Электронная почта'})
     )
     password = forms.CharField(
         max_length=50,
-        widget=forms.PasswordInput(attrs={'class': 'input', 'placeholder': 'Пароль'})
+        widget=forms.PasswordInput(attrs={'class': 'input text-black text-h3', 'placeholder': 'Пароль'})
     )
 
 
 class RegisterUserForm(forms.ModelForm):
     name = forms.CharField(
         max_length=50, 
-        widget=forms.TextInput(attrs={'class': 'input',
+        widget=forms.TextInput(attrs={'class': 'input text-black text-h3',
                                       'placeholder': 'Имя пользователя'}))
     email = forms.EmailField(
         max_length=50, 
-        widget=forms.EmailInput(attrs={'class': 'input', 
+        widget=forms.EmailInput(attrs={'class': 'input text-black text-h3', 
                                        'placeholder': 'Электронная почта'}))
     password = forms.CharField(
         max_length=50,
-        widget=forms.PasswordInput(attrs={'class': 'input', 'placeholder': 'Пароль'}),
+        widget=forms.PasswordInput(attrs={'class': 'input text-black text-h3', 'placeholder': 'Пароль'}),
     )
     password2 = forms.CharField(
         max_length=50,
-        widget=forms.PasswordInput(attrs={'class': 'input', 'placeholder': 'Подтвердите пароль'}),
+        widget=forms.PasswordInput(attrs={'class': 'input text-black text-h3', 'placeholder': 'Подтвердите пароль'}),
     )
 
     class Meta:
