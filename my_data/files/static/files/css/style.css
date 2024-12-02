@@ -29,6 +29,10 @@
   padding-right: 6px;
 }
 
+.empty_text{
+  padding-bottom: 20px;
+}
+
 .elem_list {
   display: flex;
   flex-wrap: wrap;

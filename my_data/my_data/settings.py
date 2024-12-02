@@ -120,11 +120,17 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
+    'registration.backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-LOGIN_URL = '/'
+LOGIN_URL = '/log_in/'
 LOGIN_REDIRECT_URL = '/home/'
+
+AUTH_USER_MODEL = 'registration.User'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

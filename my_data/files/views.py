@@ -4,9 +4,9 @@ from .models import File
 import pandas as pd
 from django.contrib.auth.decorators import login_required
 
-# @login_required
+@login_required
 def render_files_page(request):
-    files = File.objects.order_by('-created_time')
+    files = File.objects.filter(user=request.user).order_by('-created_time')
     return render(request, 'files/files_page.html', {'files':files})
 
 

@@ -5,7 +5,7 @@ import pandas as pd
 from django.contrib.auth.decorators import login_required
 from files.models import File, DefaultFile
 
-# @login_required
+@login_required
 def render_charts_page (request):
     files = File.objects.order_by('-created_time')
     default_files = DefaultFile.objects.order_by('name')
