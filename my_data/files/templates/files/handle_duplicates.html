@@ -1,0 +1,97 @@
+{% extends 'main/nav_bar.html' %}
+
+{% block title %}Сохранение файла{% endblock %}
+
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'files/css/style.css' %}">
+{% endblock %}
+
+{% block active1 %}active_btn{% endblock %}
+
+{% block content %}
+<h2>Удаление дубликатов</h2>
+<form id="duplicates-form" method="POST">
+    {% csrf_token %}
+    
+    <h3>Явные дубликаты</h3>
+    <label>
+        <input type="checkbox" name="remove_explicit_duplicates">
+        Удалить явные дубликаты
+    </label>
+    <div>
+        <h4>Предпросмотр:</h4>
+        <table>
+            {% for row in explicit_duplicates %}
+            <tr>
+                {% for cell in row %}
+                <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <hr>
+
+    <h3>Неявные дубликаты</h3>
+    <h4>Выберите столбцы для проверки</h4>
+    <div>
+        {% for column in string_columns %}
+        <label>
+            <input type="checkbox" name="check_implicit_duplicates" value="{{ column }}">
+            {{ column }}
+        </label>
+        {% endfor %}
+    </div>
+    <button type="button" id="check-implicit">Проверить</button>
+    <div id="implicit-duplicates"></div>
+
+    <!-- Скрытые поля для хранения изменённых значений -->
+    <div id="changed-values"></div>
+
+    <button type="submit" class="btn">Сохранить</button>
+</form>
+
+<script>
+    document.getElementById('check-implicit').addEventListener('click', () => {
+        const selected = [];
+        document.querySelectorAll('[name="check_implicit_duplicates"]:checked').forEach(el => {
+            selected.push(el.value);
+        });
+    
+        // AJAX-запрос для проверки уникальных значений
+        fetch("{% url 'check_implicit_duplicates' file_id %}", {
+            method: "POST",
+            headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+            body: JSON.stringify({ columns: selected }),
+        }).then(response => response.json()).then(data => {
+            let content = '';
+            data.unique_values.forEach(column => {
+                content += `<h4>${column.name}</h4>`;
+                column.values.forEach(value => {
+                    content += `<div><input type="text" name="implicit_${column.name}" value="${value}" data-old-value="${value}"></div>`;
+                });
+            });
+            document.getElementById('implicit-duplicates').innerHTML = content;
+        });
+    });
+    
+    // Перед отправкой формы собираем все изменённые значения и добавляем их в скрытые поля
+    document.getElementById('duplicates-form').addEventListener('submit', function(event) {
+        const changedValues = [];
+        document.querySelectorAll('#implicit-duplicates input[type="text"]').forEach(input => {
+            const column = input.name.replace('implicit_', '');
+            const oldValue = input.getAttribute('data-old-value');
+            changedValues.push({ column: column, old_value: oldValue, new_value: input.value });
+        });
+    
+        // Добавляем изменённые значения в скрытые поля
+        const changedValuesInput = document.createElement('input');
+        changedValuesInput.type = 'hidden';
+        changedValuesInput.name = 'implicit_values';
+        changedValuesInput.value = JSON.stringify(changedValues);
+        this.appendChild(changedValuesInput);
+    });    
+</script>
+{% endblock %}

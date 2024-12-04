@@ -19,7 +19,7 @@ def render_log_in_page(request):
                 login(request, user)
                 return redirect('home')
             else:
-                form.add_error(None, 'Неверный логин или пароль')
+                form.add_error('email', 'Неверная почта или пароль')
 
     return render(request, 'registration/log_in.html', {'form': form})
 

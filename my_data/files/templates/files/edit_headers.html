@@ -1,0 +1,65 @@
+{% extends 'main/nav_bar.html' %}
+
+{% block title %}Сохранение файла{% endblock %}
+
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'files/css/style.css' %}">
+{% endblock %}
+
+{% block active1 %}active_btn{% endblock %}
+
+{% block content %}
+<h2>Редактирование заголовков</h2>
+<form method="post" id="edit-headers-form">
+    {% csrf_token %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Текущий заголовок</th>
+                <th>Новый заголовок</th>
+                <th>Тип данных</th>
+                <th>Удалить</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for column, dtype in columns_and_types %}
+            <tr>
+                <td>{{ column }}</td>
+                <td>
+                    <input type="text" name="column_{{ column }}" value="{{ column }}">
+                </td>
+                <td>
+                    <select name="dtype_{{ column }}">                       
+                        <option value="string" {% if dtype == 'object' %}selected{% endif %}>String</option>
+                        <option value="int" {% if dtype == 'int64' %}selected{% endif %}>Integer</option>
+                        <option value="float" {% if dtype == 'float64' %}selected{% endif %}>Float</option>
+                        <option value="bool" {% if dtype == 'bool' %}selected{% endif %}>Boolean</option>
+                        <option value="date" {% if dtype == 'datetime64[ns]' %}selected{% endif %}>Date</option>
+                        <option value="datetime" {% if dtype == 'datetime64[ns]' %}selected{% endif %}>DateTime</option>                        
+                    </select>
+                </td>
+                <td>
+                    <button type="button" class="delete-column" data-column="{{ column }}">Удалить</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit">Сохранить</button>
+</form>
+
+<script>
+    document.querySelectorAll('.delete-column').forEach(button => {
+        button.addEventListener('click', event => {
+            const column = event.target.getAttribute('data-column');
+            event.target.closest('tr').remove();
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = `delete_${column}`;
+            input.value = 'true';
+            document.getElementById('edit-headers-form').appendChild(input);
+        });
+    });
+</script>
+{% endblock %}
