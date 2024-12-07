@@ -116,8 +116,6 @@
                     </div>
                 </div>
 
-                <!-- скрипт для корректного отображения <select> 
-                    (размер поля изменяется в зависимости от длины текста) -->
                 <script>
                     const selectElement = document.getElementById('select_diagram_type');
                     const hiddenText = document.getElementById('hidden-text');
@@ -133,14 +131,12 @@
                     selectElement.addEventListener('change', setSelectWidth);
                 </script>
                 
-                <!-- окно построения чарта -->
                 <div class="chart_preview">
                     <div class="chart_preview_top">
                         <div id="y-axis" class="y_axes" ondrop="drop(event, 'Y')" ondragover="allowDrop(event)">
                             <h4 class="text-h4 text-black"><b>Y</b> - перетащите данные</h4> 
                         </div>
                         <div class="plotly_figure">
-                            <!-- тут будет строиться график -->
                              <p>визуализация - - - визуализация - - - визуализация</p>
                              <p>визуализация - - - визуализация - - - визуализация</p>
                              <p>визуализация - - - визуализация - - - визуализация</p>
@@ -178,7 +174,7 @@
                             event.preventDefault();
                             let column = event.dataTransfer.getData("text");
                             document.getElementById(`${axis.toLowerCase()}-axis`).textContent = `${column}`;
-                            // Отправка данных через AJAX в Dash
+
                             const dropdown = document.querySelector(`#${axis.toLowerCase()}-axis select`);
                             dropdown.value = column;
                             dropdown.dispatchEvent(new Event("change"));

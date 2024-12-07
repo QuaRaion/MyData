@@ -1,15 +1,27 @@
-import json
-import logging
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.conf import settings
+from django.shortcuts import render, redirect
 from django.urls import reverse
+import logging, json, os, pandas as pd
+
 from .models import File
 import pandas as pd
 from .forms import UploadFileForm
 from django.views.decorators.csrf import csrf_exempt
 
 logger = logging.getLogger(__name__)
+
+def process_and_save_file(uploaded_file, file_instance):
+    temp_df = pd.read_csv(uploaded_file, sep=file_instance.separator, header=0 if file_instance.has_header else None)
+
+    parquet_path = f'files/{file_instance.name}.parquet'
+    full_parquet_path = os.path.join(settings.MEDIA_ROOT, parquet_path)
+    
+    temp_df.to_parquet(full_parquet_path, index=False)
+    
+    file_instance.path = parquet_path
+    file_instance.save()
 
 @login_required
 def render_files_page(request):
@@ -22,13 +34,17 @@ def render_files_page(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             uploaded_file = form.cleaned_data['file']
+            
             file_instance = File.objects.create(
                 name=form.cleaned_data.get('name') or uploaded_file.name,
-                path=uploaded_file,
+                path='',
                 user=request.user,
                 separator=form.cleaned_data['separator'],
                 has_header=form.cleaned_data['has_header'],
             )
+            
+            process_and_save_file(uploaded_file, file_instance)
+            
             return redirect(reverse('edit_file', args=[file_instance.file_id]))
 
     return render(request, 'files/files_page.html', {
@@ -37,14 +53,13 @@ def render_files_page(request):
         'form': form,
     })
 
-
 @login_required
 def edit_headers(request, file_id):
     file_instance = File.objects.get(file_id=file_id)
     file_path = file_instance.path.path
 
     try:
-        df = pd.read_csv(file_path, sep=file_instance.separator, encoding='utf-8')
+        df = pd.read_parquet(file_path, engine='pyarrow')
     except Exception as e:
         return JsonResponse({'error': f'Ошибка при чтении файла: {e}'}, status=400)
 
@@ -82,14 +97,12 @@ def edit_headers(request, file_id):
                 elif dtype == 'datetime':
                     df[column] = pd.to_datetime(df[column], errors='coerce')
 
-
         columns_to_remove = [key.split('delete_')[1] for key, value in request.POST.items() if key.startswith('delete_')]
         df.drop(columns=columns_to_remove, errors='ignore', inplace=True)
 
-        parquet_path = file_path.replace('.csv', '.parquet')
         try:
-            df.to_parquet(parquet_path, engine='pyarrow', index=False)
-            logger.info(f"Файл успешно сохранён в формате Parquet: {parquet_path}")
+            df.to_parquet(file_path, engine='pyarrow', index=False)
+            logger.info(f"Файл успешно сохранён в формате Parquet: {file_path}")
         except Exception as e:
             return JsonResponse({'error': f'Ошибка при сохранении файла в Parquet: {e}'}, status=400)
 
@@ -98,11 +111,10 @@ def edit_headers(request, file_id):
     columns_and_types = zip(df.columns, df.dtypes.apply(str))
     return render(request, 'files/edit_headers.html', {'columns_and_types': columns_and_types, 'file_id': file_id})
 
-
 @login_required
 def handle_duplicates(request, file_id):
     file_instance = File.objects.get(file_id=file_id)
-    file_path = file_instance.path.path.replace('.csv', '.parquet')
+    file_path = file_instance.path.path
 
     try:
         df = pd.read_parquet(file_path, engine='pyarrow')
@@ -139,14 +151,13 @@ def handle_duplicates(request, file_id):
         'file_id': file_id,
     })
 
-
 @csrf_exempt
 def check_implicit_duplicates(request, file_id):
     body = json.loads(request.body)
     selected_columns = body.get('columns', [])
 
     file_instance = File.objects.get(file_id=file_id)
-    file_path = file_instance.path.path.replace('.csv', '.parquet')
+    file_path = file_instance.path.path
 
     try:
         df = pd.read_parquet(file_path, engine='pyarrow')

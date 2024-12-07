@@ -79,8 +79,10 @@
             }
 
             btn_select_file.addEventListener('click', () => {
+                
                 if (selected_file_id) {
-                    window.location.href = `/charts/create_chart/${selected_file_id}/`;
+                    console.log(selected_file_id);
+                    window.location.href = `${selected_file_id}/`;
                 } else {
                     console.log("!! файл не выбран !!");
                 }
@@ -101,50 +103,7 @@
             </button>
             <button class="elem_list_btn">
                 <h3 class="text-h3 text-black">Revenue Breakdown by Region</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Quarterly Financial Overview</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Market Share Analysis</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Product Performance Metrics</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Website Traffic Trends</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Social Media Engagement Stats</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Expense Report Summary</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Conversion Rate Analysis</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Annual Budget Overview</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Sales Forecast for Q4</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Employee Performance</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Customer Retention Rates</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Product Feedback</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Employee Performance</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Employee Performance</h3>
-            </button>
-            
+            </button>            
         </div>
         <div class="title_with_btn">
             <h2 class="text-h2 title_with_btn_text">Попробуйте поработать с готовыми чартами</h2>
@@ -158,18 +117,6 @@
             </button>
             <button class="elem_list_btn">
                 <h3 class="text-h3 text-black">Revenue Breakdown by Region</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Quarterly Financial Overview</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Sales Forecast for Q4</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Employee Performance</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Customer Retention Rates</h3>
             </button>
         </div>
     </div>

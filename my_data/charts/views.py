@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView
 from django.db import connection
 import pandas as pd
+import pyarrow.parquet as pq
 from django.contrib.auth.decorators import login_required
 from files.models import *
 
@@ -18,26 +19,21 @@ class NewChart(DetailView):
     context_object_name = 'file'
 
     def get(self, request, pk):
-    # Получаем объект файла
         file = get_object_or_404(File, file_id=pk)
 
-        # Читаем файл с учётом разделителя
         try:
-            df = pd.read_csv(file.path.path, sep=file.separator, header=0 if file.has_header else None)
+            df = pd.read_parquet(file.path.path)
         except Exception as e:
-            return render(request, 'error.html', {'message': f'Ошибка чтения файла: {e}'})
-
-        # Получаем названия столбцов
+            return render(request, 'error', {'message': f'Ошибка чтения файла: {e}'})        
+            
         columns = list(df.columns)
 
-        # Передаём данные в шаблон
         return render(request, 'charts/create_chart_page.html', {'columns': columns, 'file_name': file.name})
-
     
     # фильтр на файлы, принадлежащие пользователю 
     # def get_queryset(self):
     #     return File.objects.filter(user=user)
 
 
-def render_test_page(request):
-    return render(request, 'charts/test.html')
+def render_error_page(request):
+    return render(request, 'charts/error_page.html')
