@@ -36,10 +36,10 @@
                 <!-- <input type="checkbox" name="p-policy"> -->
                 <p class="text-h5 text-dark-grey"> При входе и регистрации 
                     Вы принимаете условия
-                    <a href="#" class="text-accent">Пользовательского соглашения</a>, 
+                    <a href="{% url 'agreement' %}" class="text-accent">Пользовательского соглашения</a>,
                     а также предоставляете согласие на обработку и хранение
                     персональных данных в соответствии с
-                    <a href="#" class="text-accent">Политикой обработки персональных данных</a>
+                    <a href="{% url 'privacy_policy' %}" class="text-accent">Политикой обработки персональных данных</a>
                 </p>
             </span>
             
