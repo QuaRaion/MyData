@@ -1,96 +1,15 @@
 import dash
-from dash import dcc, html, Input, Output
+from dash import dcc, html, Input, Output, State
 import pandas as pd
 import plotly.express as px
-import base64
 import io
+import base64
 
+# Инициализация приложения Dash
 app = dash.Dash(__name__)
 
-app.layout = html.Div([
-    html.H1("График данных", style={'text-align': 'center'}),  # Центрирование заголовка страницы
-
-    # Загрузка файла
-    html.Div([
-        html.Label("Загрузите файл:", style={'margin-bottom': '5px'}),
-        dcc.Upload(
-            id='upload-data',
-            children=html.Button('Загрузить файл'),
-            multiple=False,
-            style={'margin-bottom': '15px'}
-        )
-    ]),
-
-    # Название графика (центральное расположение)
-    html.Div([
-        html.Label("Название графика:", style={'margin-bottom': '5px'}),
-        dcc.Input(id='chart-title', type='text', value='График', style={'width': '100%'}),
-    ], style={'margin-bottom': '15px'}),
-
-    # Тип графика
-    html.Div([
-        html.Div([
-            html.Label("Выберите тип графика:", style={'margin-bottom': '5px'}),
-            dcc.Dropdown(
-                id='chart-type',
-                options=[
-                    {'label': 'Точечный график (Scatter)', 'value': 'scatter'},
-                    {'label': 'Гистограмма (Histogram)', 'value': 'histogram'}
-                ],
-                value='scatter',
-                style={'width': '100%'}
-            )
-        ], style={'margin-bottom': '15px'})
-    ]),
-
-    # Фильтры
-    html.Div([
-        html.Label("Фильтровать по колонке:", style={'margin-bottom': '5px'}),
-        dcc.Dropdown(id='filter-column', options=[], style={'width': '100%', 'margin-bottom': '15px'}),
-
-        html.Label("Оператор для фильтра:", style={'margin-bottom': '5px'}),
-        dcc.Dropdown(id='filter-operator', options=[], style={'width': '100%', 'margin-bottom': '15px'}),
-
-        html.Label("Значение для фильтра:", style={'margin-bottom': '5px'}),
-        dcc.Input(id='filter-value', type='text', style={'width': '100%'})
-    ], style={'margin-bottom': '15px'}),
-
-    # Оси X и Y
-    html.Div([
-        html.Div([
-            html.Label("Выберите колонку для оси X:", style={'margin-bottom': '5px'}),
-            dcc.Dropdown(id='x-column', options=[], style={'width': '100%', 'margin-bottom': '15px'})
-        ]),
-        html.Div([
-            html.Label("Выберите колонку для оси Y (для точечного графика):", style={'margin-bottom': '5px'}),
-            dcc.Dropdown(id='y-column', options=[], style={'width': '100%'})
-        ])
-    ], style={'margin-bottom': '15px'}),
-
-    # Сортировка
-    html.Div([
-        html.Label("Сортировка по значению на графике:", style={'margin-bottom': '5px'}),
-        dcc.Dropdown(
-            id='sort-order',
-            options=[
-                {'label': 'По возрастанию', 'value': 'ascending'},
-                {'label': 'По убыванию', 'value': 'descending'}
-            ],
-            value='ascending',
-            style={'width': '100%'}
-        )
-    ], style={'margin-bottom': '15px'}),
-
-    # График
-    dcc.Graph(id='graph'),
-])
-
-
-def parse_contents(contents):
-    content_type, content_string = contents.split(',')
-    decoded = base64.b64decode(content_string)
-    return pd.read_csv(io.StringIO(decoded.decode('utf-8')))
-
+# Глобальная переменная для хранения данных
+df = pd.DataFrame()
 
 def get_filter_operators(column, df):
     if pd.api.types.is_numeric_dtype(df[column]):
@@ -110,67 +29,197 @@ def get_filter_operators(column, df):
     else:
         return []
 
+def get_aggregation_functions():
+    return [
+        {'label': 'Без агрегации', 'value': 'none'},
+        {'label': 'Сумма', 'value': 'sum'},
+        {'label': 'Максимум', 'value': 'max'},
+        {'label': 'Минимум', 'value': 'min'},
+        {'label': 'Количество', 'value': 'count'}
+    ]
+
+# Макет приложения
+app.layout = html.Div([
+    html.H1("Конструктор графиков", style={'textAlign': 'center'}),
+
+    html.Label("Загрузите файл (CSV):"),
+    dcc.Upload(
+        id='upload-data',
+        children=html.Button("Загрузить файл"),
+        multiple=False,
+        style={'margin-bottom': '15px'}
+    ),
+
+    html.Label("Выберите тип графика:"),
+    dcc.Dropdown(
+        id='chart-type',
+        options=[
+            {'label': 'Точечный график (Scatter)', 'value': 'scatter'},
+            {'label': 'Линейный график (Line)', 'value': 'line'},
+            {'label': 'Столбчатый график (Bar)', 'value': 'bar'},
+            {'label': 'Линейчатый график (Horizontal Bar)', 'value': 'horizontal_bar'},
+            {'label': 'Круговая диаграмма (Pie)', 'value': 'pie'},
+            {'label': 'Кольцевая диаграмма (Donut)', 'value': 'donut'}
+        ],
+        value='scatter',
+        style={'width': '100%', 'margin-bottom': '15px'}
+    ),
+
+    html.Label("Выберите колонку для оси X или категорий:"),
+    dcc.Dropdown(id='x-column', style={'width': '100%', 'margin-bottom': '15px'}),
+
+    html.Label("Выберите колонку для оси Y или значений:"),
+    dcc.Dropdown(id='y-column', style={'width': '100%', 'margin-bottom': '15px'}),
+
+    # Фильтры
+    html.Div([
+        html.Label("Фильтровать по колонке:", style={'margin-bottom': '5px'}),
+        dcc.Dropdown(id='filter-column', options=[], style={'width': '100%', 'margin-bottom': '15px'}),
+
+        html.Label("Оператор для фильтра:", style={'margin-bottom': '5px'}),
+        dcc.Dropdown(id='filter-operator', options=[], style={'width': '100%', 'margin-bottom': '15px'}),
+
+        html.Label("Значение для фильтра:", style={'margin-bottom': '5px'}),
+        dcc.Input(id='filter-value', type='text', style={'width': '100%'}),
+    ], style={'margin-bottom': '15px'}),
+
+    html.Label("Сортировка данных по оси Y:"),
+    dcc.Dropdown(
+        id='sort-order',
+        options=[
+            {'label': 'По возрастанию', 'value': 'ascending'},
+            {'label': 'По убыванию', 'value': 'descending'}
+        ],
+        value='descending',
+        style={'width': '100%', 'margin-bottom': '15px'}
+    ),
+
+    html.Label("Выберите функцию агрегации:"),
+    dcc.Dropdown(
+        id='aggregation-function',
+        options=get_aggregation_functions(),
+        value='none',
+        style={'width': '100%', 'margin-bottom': '15px'}
+    ),
+
+    html.Label("Введите заголовок графика:"),
+    dcc.Input(id='chart-title', type='text', value='', style={'width': '100%', 'margin-bottom': '15px'}),
+
+    html.Button("Построить график", id='submit-button', n_clicks=0, style={'margin-bottom': '15px'}),
+
+    dcc.Graph(id='graph-output')
+])
+
+# Функция для обработки загруженного файла
+@app.callback(
+    [Output('x-column', 'options'),
+     Output('y-column', 'options'),
+     Output('filter-column', 'options')],
+    Input('upload-data', 'contents'),
+    State('upload-data', 'filename')
+)
+def load_data(contents, filename):
+    global df
+    if contents is not None:
+        content_type, content_string = contents.split(',')
+        decoded = base64.b64decode(content_string)
+        try:
+            if filename.endswith('.csv'):
+                df = pd.read_csv(io.StringIO(decoded.decode('utf-8')))
+            else:
+                return [], [], []
+        except Exception as e:
+            print(f"Ошибка загрузки файла: {e}")
+            return [], [], []
+    column_options = [{'label': col, 'value': col} for col in df.columns]
+    return column_options, column_options, column_options
 
 @app.callback(
-    Output('filter-column', 'options'),
-    Output('x-column', 'options'),
-    Output('y-column', 'options'),
     Output('filter-operator', 'options'),
-    Output('filter-value', 'value'),
-    Output('graph', 'figure'),
-    Input('upload-data', 'contents'),
-    Input('chart-title', 'value'),
-    Input('chart-type', 'value'),
-    Input('filter-column', 'value'),
-    Input('filter-operator', 'value'),
-    Input('filter-value', 'value'),
-    Input('x-column', 'value'),
-    Input('y-column', 'value'),
-    Input('sort-order', 'value')
+    Input('filter-column', 'value')
 )
-def update_graph(contents, title, chart_type, filter_column, filter_operator, filter_value, x_column, y_column, sort_order):
-    if contents is None:
-        return [], [], [], [], '', {}
+def update_filter_operators(column):
+    if column and column in df.columns:
+        return get_filter_operators(column, df)
+    return []
 
-    df = parse_contents(contents)
+# Построение графика
+@app.callback(
+    Output('graph-output', 'figure'),
+    [Input('submit-button', 'n_clicks')],
+    [State('chart-type', 'value'),
+     State('x-column', 'value'),
+     State('y-column', 'value'),
+     State('filter-column', 'value'),
+     State('filter-operator', 'value'),
+     State('filter-value', 'value'),
+     State('sort-order', 'value'),
+     State('aggregation-function', 'value'),
+     State('chart-title', 'value')]
+)
+def update_graph(n_clicks, chart_type, x_column, y_column, filter_column, filter_operator, filter_value, sort_order, aggregation_function, title):
+    if df.empty or not x_column or (chart_type not in ['pie', 'donut'] and not y_column):
+        return {}
 
-    # Обновление опций для фильтров и осей
-    filter_columns = [{'label': col, 'value': col} for col in df.columns]
-    x_columns = [{'label': col, 'value': col} for col in df.columns]
-    y_columns = [{'label': col, 'value': col} for col in df.columns]
+    filtered_df = df.copy()
 
-    filter_operator_options = []
-    if filter_column:
-        filter_operator_options = get_filter_operators(filter_column, df)
+    # Фильтрация данных
+    if filter_column and filter_operator and filter_value:
+        try:
+            # Явная обработка ошибок преобразования в числовой формат
+            filter_value = pd.to_numeric(filter_value, errors='coerce') if pd.to_numeric(filter_value, errors='coerce') else filter_value
+            if filter_operator == '==':
+                filtered_df = filtered_df[filtered_df[filter_column] == filter_value]
+            elif filter_operator == '!=':
+                filtered_df = filtered_df[filtered_df[filter_column] != filter_value]
+            elif filter_operator == '<':
+                filtered_df = filtered_df[filtered_df[filter_column] < float(filter_value)]
+            elif filter_operator == '<=':
+                filtered_df = filtered_df[filtered_df[filter_column] <= float(filter_value)]
+            elif filter_operator == '>':
+                filtered_df = filtered_df[filtered_df[filter_column] > float(filter_value)]
+            elif filter_operator == '>=':
+                filtered_df = filtered_df[filtered_df[filter_column] >= float(filter_value)]
+        except Exception as e:
+            print(f"Ошибка фильтрации: {e}")
 
-    if filter_column and filter_value and filter_operator:
-        if pd.api.types.is_numeric_dtype(df[filter_column]):
-            filter_value = float(filter_value)
-        if filter_operator == '==':
-            df = df[df[filter_column] == filter_value]
-        elif filter_operator == '!=':
-            df = df[df[filter_column] != filter_value]
-        elif filter_operator == '<':
-            df = df[df[filter_column] < filter_value]
-        elif filter_operator == '<=':
-            df = df[df[filter_column] <= filter_value]
-        elif filter_operator == '>':
-            df = df[df[filter_column] > filter_value]
-        elif filter_operator == '>=':
-            df = df[df[filter_column] >= filter_value]
+    # Применение агрегации
+    if aggregation_function != 'none' and y_column in filtered_df.columns:
+        if aggregation_function == 'sum':
+            filtered_df = filtered_df.groupby(x_column).sum().reset_index()
+        elif aggregation_function == 'max':
+            filtered_df = filtered_df.groupby(x_column).max().reset_index()
+        elif aggregation_function == 'min':
+            filtered_df = filtered_df.groupby(x_column).min().reset_index()
+        elif aggregation_function == 'count':
+            filtered_df = filtered_df.groupby(x_column).count().reset_index()
 
-    if chart_type == 'scatter' and x_column and y_column:
-        fig = px.scatter(df, x=x_column, y=y_column, title=title)
-    elif chart_type == 'histogram' and x_column:
-        hist = df[x_column].value_counts().reset_index()
-        hist.columns = [x_column, 'count']
-        hist = hist.sort_values(by='count', ascending=(sort_order == 'ascending'))
-        fig = px.bar(hist, x=x_column, y='count', title=title)
-    else:
-        fig = {}
+    # Сортировка данных по значениям оси Y
+    if sort_order == 'ascending' and y_column in filtered_df.columns:
+        filtered_df = filtered_df.sort_values(by=y_column, ascending=True)
+    elif sort_order == 'descending' and y_column in filtered_df.columns:
+        filtered_df = filtered_df.sort_values(by=y_column, ascending=False)
 
-    return filter_columns, x_columns, y_columns, filter_operator_options, filter_value, fig
+    # Построение графика в зависимости от выбранного типа
+    if chart_type == 'scatter':
+        fig = px.scatter(filtered_df, x=x_column, y=y_column, title=title)
 
+    elif chart_type == 'line':
+        fig = px.line(filtered_df, x=x_column, y=y_column, title=title)
+
+    elif chart_type == 'bar':
+        fig = px.bar(filtered_df, x=x_column, y=y_column, title=title)
+
+    elif chart_type == 'horizontal_bar':
+        fig = px.bar(filtered_df, x=y_column, y=x_column, title=title, orientation='h')
+
+    elif chart_type == 'pie':
+        fig = px.pie(filtered_df, names=x_column, values=y_column, title=title)
+
+    elif chart_type == 'donut':
+        fig = px.pie(filtered_df, names=x_column, values=y_column, title=title, hole=0.3)
+
+    return fig
 
 if __name__ == '__main__':
     app.run_server(debug=True)
