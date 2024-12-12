@@ -37,3 +37,10 @@ def render_sign_up_page(request):
             return redirect('log_in')
 
     return render(request, 'registration/sign_up.html', {'form': form})
+
+
+def privacy_policy(request):
+    return render(request, 'registration/privacy_policy.html')
+
+def agreement(request):
+    return render(request, 'registration/agreement.html')

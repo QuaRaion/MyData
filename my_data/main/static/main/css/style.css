@@ -221,3 +221,8 @@ section {
 .nav_bar_btn_profil:hover {
   transform: scale(1.1);
 }
+
+.limited-text {
+    width: 700px; /* Фиксированная ширина */
+    word-wrap: break-word; /* Перенос слов, если они длинные */
+}
