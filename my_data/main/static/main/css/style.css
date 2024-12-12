@@ -28,7 +28,8 @@ a {
   cursor: pointer;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
@@ -222,7 +223,11 @@ section {
   transform: scale(1.1);
 }
 
-.limited-text {
-    width: 700px; /* Фиксированная ширина */
-    word-wrap: break-word; /* Перенос слов, если они длинные */
+.home_page_content {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 20px;
 }
