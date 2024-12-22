@@ -28,12 +28,16 @@ class NewChart(DetailView):
             
         columns = list(df.columns)
 
-        return render(request, 'charts/create_chart_page.html', {'columns': columns, 'file_name': file.name})
+        return render(request, 'charts/prev_create_chart_page.html', {'columns': columns, 'file_name': file.name})
     
     # фильтр на файлы, принадлежащие пользователю 
     # def get_queryset(self):
     #     return File.objects.filter(user=user)
 
 
-def render_error_page(request):
+def render_error_page(request, pk):
+    p = pk
     return render(request, 'charts/error_page.html')
+
+def index(request):
+    return render(request, 'charts/create_chart_page.html')

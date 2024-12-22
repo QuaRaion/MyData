@@ -28,13 +28,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
     'registration',
     'main',
-    'files',
+    'files',    
     'charts',
     'dashboards',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
@@ -61,6 +60,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django_plotly_dash.finders.DashAssetFinder',
+    'django_plotly_dash.finders.DashComponentFinder',
+]
+
 ROOT_URLCONF = 'my_data.urls'
 
 TEMPLATES = [
@@ -80,6 +86,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'my_data.wsgi.application'
+
+ASGI_APPLICATION = 'my_data.asgi.application'
 
 
 # Database
@@ -155,6 +163,8 @@ STATICFILES_DIR = [
     BASE_DIR / "static",
 ]
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
 MEDIA_URL = '/files/'
 
@@ -163,7 +173,6 @@ MEDIA_URL = '/files/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
@@ -174,11 +183,11 @@ PLOTLY_COMPONENTS = [
     'dash_daq',
 ]
 
-ASGI_APPLICATION = 'my_data.asgi.application'
+
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
     },
 }
 
