@@ -406,3 +406,13 @@
   border: 1px dashed var(--dark-grey-color);
   border-radius: 8px;
 }
+
+.work_section {
+  margin: 0px 100px;
+  margin-top: 30px;
+  padding-bottom: 30px;
+}
+
+.plotly_app {
+
+}

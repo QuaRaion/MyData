@@ -14,8 +14,15 @@
 {% load static %}
 
 <section class="work_section">
+    <button class="btn_add" id="btn_add_chart">
+        <img src="{% static 'main/img/white_plus.svg' %}" alt="" class="btn_add_img">
+        <h3 class="text-h3 text-white">чарт</h3>
+    </button>
     {% load plotly_dash %}
-    {% plotly_app name="ChartBuilder" %}
+    {% plotly_app name="ChartBuilder" ratio=1 %}
+    <!-- ratio в значении 1 позволяет отображать plotly_app на всю страницу -->
+
+    
 </section>
 
 {% endblock %}
