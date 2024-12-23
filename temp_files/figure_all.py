@@ -5,10 +5,8 @@ import plotly.express as px
 import io
 import base64
 
-# Инициализация приложения Dash
-app = dash.Dash(__name__)
 
-# Глобальная переменная для хранения данных
+app = dash.Dash(__name__)
 df = pd.DataFrame()
 
 def get_filter_operators(column, df):
@@ -38,7 +36,6 @@ def get_aggregation_functions():
         {'label': 'Количество', 'value': 'count'}
     ]
 
-# Макет приложения
 app.layout = html.Div([
     html.H1("Конструктор графиков", style={'textAlign': 'center'}),
 
