@@ -14,15 +14,18 @@
 {% load static %}
 
 <section class="work_section">
-    <button class="btn_add" id="btn_add_chart">
-        <img src="{% static 'main/img/white_plus.svg' %}" alt="" class="btn_add_img">
-        <h3 class="text-h3 text-white">чарт</h3>
-    </button>
+    <div class="save_diagram">
+        <button class="btn_export">
+            <img class="btn_export_img" src="{% static 'charts/img/export_file.svg' %}" alt="Экспорт чарта">
+        </button>
+        <button class="btn_save">
+            <h3 class="text-h3 text-white">сохранить</h3>
+        </button>
+    </div>
     {% load plotly_dash %}
     {% plotly_app name="ChartBuilder" ratio=1 %}
     <!-- ratio в значении 1 позволяет отображать plotly_app на всю страницу -->
 
-    
 </section>
 
 {% endblock %}

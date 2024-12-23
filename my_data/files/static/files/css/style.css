@@ -271,3 +271,7 @@
 .file-uploaded:hover::before {
   background-color: rgba(233, 40, 6, 0.664);
 }
+
+.preprocessing_area{
+  margin: 40px;
+}

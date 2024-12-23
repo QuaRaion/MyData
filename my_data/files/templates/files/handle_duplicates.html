@@ -10,49 +10,50 @@
 {% block active1 %}active_btn{% endblock %}
 
 {% block content %}
-<h2>Удаление дубликатов</h2>
-<form id="duplicates-form" method="POST">
-    {% csrf_token %}
-    
-    <h3>Явные дубликаты</h3>
-    <label>
-        <input type="checkbox" name="remove_explicit_duplicates">
-        Удалить явные дубликаты
-    </label>
-    <div>
-        <h4>Предпросмотр:</h4>
-        <table>
-            {% for row in explicit_duplicates %}
-            <tr>
-                {% for cell in row %}
-                <td>{{ cell }}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
-
-    <hr>
-
-    <h3>Неявные дубликаты</h3>
-    <h4>Выберите столбцы для проверки</h4>
-    <div>
-        {% for column in string_columns %}
+<div class="preprocessing_area">
+    <h2>Удаление дубликатов</h2>
+    <form id="duplicates-form" method="POST">
+        {% csrf_token %}
+        
+        <h3>Явные дубликаты</h3>
         <label>
-            <input type="checkbox" name="check_implicit_duplicates" value="{{ column }}">
-            {{ column }}
+            <input type="checkbox" name="remove_explicit_duplicates">
+            Удалить явные дубликаты
         </label>
-        {% endfor %}
-    </div>
-    <button type="button" id="check-implicit">Проверить</button>
-    <div id="implicit-duplicates"></div>
-
-    <!-- Скрытые поля для хранения изменённых значений -->
-    <div id="changed-values"></div>
-
-    <button type="submit" class="btn">Сохранить</button>
-</form>
-
+        <div>
+            <h4>Предпросмотр:</h4>
+            <table>
+                {% for row in explicit_duplicates %}
+                <tr>
+                    {% for cell in row %}
+                    <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    
+        <hr>
+    
+        <h3>Неявные дубликаты</h3>
+        <h4>Выберите столбцы для проверки</h4>
+        <div>
+            {% for column in string_columns %}
+            <label>
+                <input type="checkbox" name="check_implicit_duplicates" value="{{ column }}">
+                {{ column }}
+            </label>
+            {% endfor %}
+        </div>
+        <button type="button" id="check-implicit">Проверить</button>
+        <div id="implicit-duplicates"></div>
+    
+        <!-- Скрытые поля для хранения изменённых значений -->
+        <div id="changed-values"></div>
+    
+        <button type="submit" class="btn">Сохранить</button>
+    </form>
+</div>
 <script>
     document.getElementById('check-implicit').addEventListener('click', () => {
         const selected = [];
@@ -94,4 +95,5 @@
         this.appendChild(changedValuesInput);
     });    
 </script>
+
 {% endblock %}
