@@ -60,7 +60,9 @@ app.layout = html.Div([
             {'label': 'Линейчатый график (Horizontal Bar)', 'value': 'horizontal_bar'},
             {'label': 'Круговая диаграмма (Pie)', 'value': 'pie'},
             {'label': 'Кольцевая диаграмма (Donut)', 'value': 'donut'},
-            {'label': 'Ящик с усиками (Box plot)', 'value': 'box'}
+            {'label': 'Ящик с усиками (Box plot)', 'value': 'box'},
+            {'label': 'Тепловая карта (Heatmap)', 'value': 'heatmap'}
+
         ],
         value='scatter',
         style={'width': '100%', 'margin-bottom': '15px'}
@@ -222,6 +224,12 @@ def update_graph(n_clicks, chart_type, x_column, y_column, filter_column, filter
 
     elif chart_type == 'box':
         fig = px.box(filtered_df, x=x_column, y=y_column, title=title)
+
+    elif chart_type == 'heatmap':
+        if x_column and y_column and x_column in filtered_df.columns and y_column in filtered_df.columns:
+            fig = px.density_heatmap(filtered_df, x=x_column, y=y_column, title=title)
+        else:
+            fig = {}
 
     return fig
 
