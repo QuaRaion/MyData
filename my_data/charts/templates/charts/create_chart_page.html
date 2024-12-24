@@ -5,7 +5,6 @@
 {% block style %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'charts/css/style.css' %}">
-<script src="https://cdn.plotly.com/2.25.2/plotly.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 {% endblock %}
@@ -18,8 +17,8 @@
         <div class="left columns_list">
             <h3 class="text-h4 text-dark-grey list_title">название чарта</h3>
             <div class="input_container">
-                <input type="text" maxlength="30" id="chart-title"
-                       class="text-h4 text-black search_input" placeholder="ввести название">
+                <input type="text" maxlength="30" id="chart-title" class="text-h4 text-black search_input"
+                    placeholder="ввести название">
             </div>
 
             <h3 class="text-h4 text-dark-grey list_title">ось X</h3>
@@ -37,8 +36,8 @@
             <select id="filter-operator" class="drop_list"></select>
 
             <div class="input_container">
-                <input type="text" maxlength="30" id="filter-value"
-                       class="text-h4 text-black search_input" placeholder="ввести значение">
+                <input type="text" maxlength="30" id="filter-value" class="text-h4 text-black search_input"
+                    placeholder="ввести значение">
             </div>
 
             <h3 class="text-h4 text-dark-grey list_title">параметры</h3>
@@ -82,8 +81,14 @@
                     <!-- <button class="btn_export">
                         <img class="btn_export_img" src="{% static 'charts/img/export_file.svg' %}" alt="Экспорт чарта">
                     </button> -->
-                    <button class="btn_save">
-                        <h3 class="text-h3 text-white">сохранить</h3>
+
+                    <div>
+                        <label for="chart-name">Введите название чарта:</label>
+                        <input type="text" id="chart-name" placeholder="Название чарта" />
+                    </div>
+
+                    <button id="save-chart" class="btn_save">
+                        <h3 class="text-h3 text-white">сохранить чарт</h3>
                     </button>
                 </div>
             </div>
@@ -98,11 +103,11 @@
 </section>
 
 <script>
-    const df = {{ dataframe|safe }};
-    
+    const df = {{ dataframe| safe }};
+
     function initDropdowns() {
         const columns = Object.keys(df[0]);
-    
+
         $('#x-column').append(`<option value="">не выбрано</option>`);
         $('#y-column').append(`<option value="">не выбрано</option>`);
         columns.forEach(col => {
@@ -110,7 +115,7 @@
             $('#y-column').append(`<option value="${col}">${col}</option>`);
             $('#filter-column').append(`<option value="${col}">${col}</option>`);
         });
-    
+
         $('#filter-operator').append(`<option value="">не выбрано</option>`);
     }
 
@@ -138,7 +143,7 @@
             `);
         }
     }
-    
+
     function buildChart() {
         const chartType = $('#select_diagram_type').val();
         const xColumn = $('#x-column').val();
@@ -149,13 +154,13 @@
         const sortOrder = $('#sort-order').val();
         const aggregation = $('#aggregation-function').val();
         const chartTitle = $('#chart-title').val();
-    
+
         let filteredData = df;
-    
+
         if (filterColumn && filterOperator && filterValue) {
             const sampleValue = df[0][filterColumn];
             const isString = typeof sampleValue === 'string';
-    
+
             filteredData = filteredData.filter(row => {
                 const columnValue = row[filterColumn];
                 if (isString) {
@@ -197,7 +202,7 @@
         } else if (sortOrder === 'descending') {
             filteredData.sort((a, b) => b[yColumn] - a[yColumn]);
         }
-    
+
         // агрегация
         let aggregatedData = [];
         if (aggregation !== 'none') {
@@ -207,7 +212,7 @@
                 'min': (data) => Math.min(...data.map(row => row[yColumn])),
                 'count': (data) => data.length
             };
-    
+
             const aggregatedValue = aggrMap[aggregation](filteredData);
             aggregatedData = [{
                 [xColumn]: 'Aggregate',
@@ -216,7 +221,7 @@
         } else {
             aggregatedData = filteredData;
         }
-    
+
         let trace;
         const layout = {
             title: chartTitle,
@@ -227,7 +232,7 @@
                 title: yColumn
             }
         };
-    
+
         if (chartType === 'scatter') {
             trace = {
                 x: aggregatedData.map(row => row[xColumn]),
@@ -263,19 +268,90 @@
                 ...(chartType === 'donut' && { hole: 0.4 })
             };
         }
-    
+
         Plotly.newPlot('chart', [trace], layout);
     }
-    
+
     $(document).ready(() => {
         initDropdowns();
-    
+
         $('#filter-column').change(function () {
             const selectedColumn = $(this).val();
             updateFilterOperators(selectedColumn);
         });
-    
+
         $('#build-chart').click(buildChart);
     });
+
+
+    function saveChart() {
+        const chartName = $('#chart-name').val();
+        const chartType = $('#select_diagram_type').val();
+        const xColumn = $('#x-column').val();
+        const yColumn = $('#y-column').val();
+        const filterColumn = $('#filter-column').val();
+        const filterOperator = $('#filter-operator').val();
+        const filterValue = $('#filter-value').val();
+        const sortOrder = $('#sort-order').val();
+        const aggregation = $('#aggregation-function').val();
+        const chartTitle = $('#chart-title').val();
+
+        const chartData = {
+            chartType: chartType,
+            xColumn: xColumn,
+            yColumn: yColumn,
+            filter: {
+                column: filterColumn,
+                operator: filterOperator,
+                value: filterValue
+            },
+            sortOrder: sortOrder,
+            aggregation: aggregation,
+            chartTitle: chartTitle
+        };
+
+        if (!chartName) {
+            alert('Введите название для сохранения чарта.');
+            return;
+        }
+
+        $.ajax({
+            url: `save/`,
+            method: 'POST',
+            data: JSON.stringify({
+                name: chartName,
+                filters: chartData
+            }),
+            contentType: 'application/json',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            success: function (response) {
+                window.location.href = '/home/charts/';
+            },
+            error: function (error) {
+                alert('Ошибка при сохранении чарта.');
+                console.error(error);
+            }
+        });
+    }
+
+    $('#save-chart').click(saveChart);
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
 </script>
 {% endblock %}

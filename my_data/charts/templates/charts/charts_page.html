@@ -83,7 +83,6 @@
                 if (selected_file_id) {
                     console.log(selected_file_id);
                     window.location.href = `${selected_file_id}/`;
-                    // window.location.href = 'create_chart/';
                 } else {
                     console.log("!! файл не выбран !!");
                 }
@@ -95,31 +94,33 @@
             })
         </script>
 
+        {% if user_charts %}
         <div class="elem_list">
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Sales Growth 2023</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Customer Satisfaction Survey</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Revenue Breakdown by Region</h3>
-            </button>            
+            {% for el in user_charts %}
+                <button class="elem_list_btn">
+                    <h3 class="text-h3 text-black">{{ el.name|truncatechars_html:30 }}</h3>
+                </button>
+            {% endfor %}
         </div>
+        {% else %}
+            <h3 class="text-h3 text-dark-grey empty_text">Вы еще не создали ни одного чарта</h3>
+        {% endif %}
+
         <div class="title_with_btn">
-            <h2 class="text-h2 title_with_btn_text">Попробуйте поработать с готовыми чартами</h2>
+            <h2 class="text-h2 title_with_btn_text">Взгляните на готовые чарты</h2>
         </div>
+
+        {% if public_charts %}
         <div class="elem_list">
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Sales Growth 2023</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Customer Satisfaction Survey</h3>
-            </button>
-            <button class="elem_list_btn">
-                <h3 class="text-h3 text-black">Revenue Breakdown by Region</h3>
-            </button>
+            {% for el in public_charts %}
+                <button class="elem_list_btn">
+                    <h3 class="text-h3 text-black">{{ el.name|truncatechars_html:30 }}</h3>
+                </button>
+            {% endfor %}
         </div>
+        {% else %}
+            <h3 class="text-h3 text-dark-grey empty_text">Извините, готовые чарты сейчас не доступны...</h3>
+        {% endif %}
     </div>
 
 </section>

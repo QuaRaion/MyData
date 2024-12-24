@@ -6,6 +6,6 @@ class ChartsConfig(AppConfig):
     name = 'charts'
     
     # функция для подключения dash приложения
-    def ready(self): 
-        import charts.dash_apps
+    # def ready(self): 
+    #     import charts.dash_apps
 

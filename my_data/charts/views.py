@@ -1,40 +1,31 @@
 import json
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import DetailView
-from django.db import connection
 import pandas as pd
-import pyarrow.parquet as pq
 from django.contrib.auth.decorators import login_required
 from files.models import *
 from .models import *
-from django_plotly_dash import DjangoDash
-from dash import dcc, html, Input, Output, State
-import plotly.express as px
+
+# from django.views.generic import DetailView
+# from django.db import connection
+# import pyarrow.parquet as pq
+# from django_plotly_dash import DjangoDash
+# from dash import dcc, html, Input, Output, State
+# import plotly.express as px
 
 @login_required
 def render_charts_page (request):
+    user_charts = Chart.objects.filter(user=request.user).order_by('-created_time')
+    public_charts = Chart.objects.filter(is_public=True).order_by('-created_time')
     user_files = File.objects.filter(user=request.user).order_by('-created_time')
-    public_files = File.objects.filter(is_public=True).order_by('-name')
+    public_files = File.objects.filter(is_public=True).order_by('-created_time')
     
-    return render(request, 'charts/charts_page.html', {'user_files':user_files, 'public_files':public_files})
+    return render(request, 'charts/charts_page.html', 
+                  {'user_files':user_files, 
+                   'public_files':public_files,
+                   'user_charts':user_charts, 
+                   'public_charts':public_charts,})
 
-# class NewChart(DetailView):
-#     model = File
-#     template_name = 'charts/create_chart_page.html'
-#     context_object_name = 'file'
-
-#     def get(self, request, pk):
-#         file = get_object_or_404(File, file_id=pk)
-
-#         try:
-#             df = pd.read_parquet(file.path.path)
-#         except Exception as e:
-#             return render(request, 'error', {'message': f'Ошибка чтения файла: {e}'})        
-            
-#         columns = list(df.columns)
-
-#         return render(request, 'charts/prev_create_chart_page.html', {'columns': columns, 'file_name': file.name})
 
 
 def render_error_page(request, pk):
@@ -55,4 +46,35 @@ def create_chart_page(request, pk):
         'file_id': pk,
         'dataframe': data
     })
+
+
+# реализация сохранения чарта в БД
+def save_chart(request, pk):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+
+            chart_name = data.get('name')
+            filters = data.get('filters')
+
+            if not chart_name:
+                return JsonResponse({'error': 'Название чарта обязательно!'}, status=400)
+
+            file_instance = get_object_or_404(File, file_id=pk)
+
+            # сохранение чарта в БД
+            chart = Chart.objects.create(
+                user=request.user,
+                file=file_instance,
+                name=chart_name,
+                filters=filters
+            )
+
+            return JsonResponse({'message': 'Чарт успешно сохранен!', 'chart_id': chart.chart_id})
+        
+        except Exception as e:
+            print(f"Ошибка: {e}")
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Метод запроса не поддерживается'}, status=405)
 

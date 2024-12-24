@@ -9,6 +9,8 @@ class Chart(models.Model):
     name = models.CharField(max_length=50)
     filters = models.JSONField()
     created_time = models.DateTimeField(auto_now=True)
+    update_time = models.DateTimeField(auto_now=True)
+    is_public = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'charts'
@@ -18,3 +20,8 @@ class Chart(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        if not self.name:
+            self.name = f'Чарт #{self.chart_id}'
+        super(Chart, self).save(*args, **kwargs)

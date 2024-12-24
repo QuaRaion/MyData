@@ -5,8 +5,10 @@ from my_data import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('django_plotly_dash/', include('django_plotly_dash.urls')),
     path('', include('registration.urls')),
+    
+    # подключение django_plotly_dash
+    # path('django_plotly_dash/', include('django_plotly_dash.urls')),
 ]
 
 if settings.DEBUG:
