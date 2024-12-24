@@ -61,7 +61,9 @@ app.layout = html.Div([
             {'label': 'Круговая диаграмма (Pie)', 'value': 'pie'},
             {'label': 'Кольцевая диаграмма (Donut)', 'value': 'donut'},
             {'label': 'Ящик с усиками (Box plot)', 'value': 'box'},
-            {'label': 'Тепловая карта (Heatmap)', 'value': 'heatmap'}
+            {'label': 'Тепловая карта (Heatmap)', 'value': 'heatmap'},
+            {'label': 'Корреляционная тепловая карта (Correlation Heatmap)', 'value': 'correlation_heatmap'}
+
 
         ],
         value='scatter',
@@ -231,6 +233,28 @@ def update_graph(n_clicks, chart_type, x_column, y_column, filter_column, filter
         else:
             fig = {}
 
+
+    elif chart_type == 'correlation_heatmap':
+        # Отфильтровываем только числовые столбцы
+        numeric_df = filtered_df.select_dtypes(include=['number'])
+        # Проверяем, есть ли хотя бы два числовых столбца для корреляции
+        if numeric_df.shape[1] > 1:
+            # Вычисляем корреляцию между числовыми столбцами
+            corr_matrix = numeric_df.corr()
+            # Создаем тепловую карту на основе матрицы корреляции
+            fig = px.imshow(
+                corr_matrix,
+                title=title if title else "Корреляционная тепловая карта",
+                color_continuous_scale='Viridis',
+                labels={'color': 'Корреляция'},
+                x=corr_matrix.columns,
+                y=corr_matrix.index
+            )
+        else:
+            # Если нет достаточного количества числовых данных, показываем сообщение
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=[0], y=[0], mode='text', text=["Нет достаточных числовых данных для корреляции"],
+                                     textposition="middle center"))
     return fig
 
 if __name__ == '__main__':
