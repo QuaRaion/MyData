@@ -5,8 +5,10 @@ import plotly.express as px
 import io
 import base64
 
-
+# Инициализация приложения Dash
 app = dash.Dash(__name__)
+
+# Глобальная переменная для хранения данных
 df = pd.DataFrame()
 
 def get_filter_operators(column, df):
@@ -36,6 +38,7 @@ def get_aggregation_functions():
         {'label': 'Количество', 'value': 'count'}
     ]
 
+# Макет приложения
 app.layout = html.Div([
     html.H1("Конструктор графиков", style={'textAlign': 'center'}),
 
@@ -56,7 +59,8 @@ app.layout = html.Div([
             {'label': 'Столбчатый график (Bar)', 'value': 'bar'},
             {'label': 'Линейчатый график (Horizontal Bar)', 'value': 'horizontal_bar'},
             {'label': 'Круговая диаграмма (Pie)', 'value': 'pie'},
-            {'label': 'Кольцевая диаграмма (Donut)', 'value': 'donut'}
+            {'label': 'Кольцевая диаграмма (Donut)', 'value': 'donut'},
+            {'label': 'Ящик с усиками (Box plot)', 'value': 'box'}
         ],
         value='scatter',
         style={'width': '100%', 'margin-bottom': '15px'}
@@ -215,6 +219,9 @@ def update_graph(n_clicks, chart_type, x_column, y_column, filter_column, filter
 
     elif chart_type == 'donut':
         fig = px.pie(filtered_df, names=x_column, values=y_column, title=title, hole=0.3)
+
+    elif chart_type == 'box':
+        fig = px.box(filtered_df, x=x_column, y=y_column, title=title)
 
     return fig
 
