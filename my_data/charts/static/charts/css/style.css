@@ -1,3 +1,17 @@
+.input {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 16px 10px;
+  background-color: var(--light-grey-color);
+  border-radius: 10px;
+  box-shadow: 12.5px 12.5px 10px rgba(0, 0, 0, 0.015),100px 100px 80px rgba(0, 0, 0, 0.03);
+}
+
+.input:focus {
+  border: 1px solid rgb(23, 111, 211);
+}
+
 .charts_list {}
 
 .title_with_btn {
@@ -288,6 +302,9 @@
   display: flex;
   justify-content: start;
   align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 10px;
 }
 
 .select_area {
@@ -301,6 +318,11 @@
 
 .select_area:hover {
   border-color: var(--accent-color);
+}
+
+.build-chart-btn{
+  margin-left: 10px;
+  padding-left: 10px;
 }
 
 .select_diagram_type {
@@ -407,15 +429,16 @@
   border-radius: 8px;
 }
 
-.work_section {
-  margin: 0px 100px;
-  margin-top: 30px;
-  padding-bottom: 30px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-label {
-  font-weight: bold;
+.drop_list {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  background-color: transparent;
+  border-color: var(--grey-color);
+  border-width: 1px;
+  border-radius: 8px;
+  padding: 6px 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: .3s ease;
 }
