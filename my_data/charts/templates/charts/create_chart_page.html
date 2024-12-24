@@ -1,3 +1,4 @@
+
 {% extends 'main/nav_bar.html' %}
 
 {% block title %}Создание чарта{% endblock %}
@@ -5,7 +6,9 @@
 {% block style %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'charts/css/style.css' %}">
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdn.plotly.com/2.25.2/plotly.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 {% endblock %}
 
 {% block active2 %}active_btn{% endblock %}
@@ -13,19 +16,260 @@
 {% block content %}
 {% load static %}
 
-<section class="work_section">
-    <div class="save_diagram">
-        <button class="btn_export">
-            <img class="btn_export_img" src="{% static 'charts/img/export_file.svg' %}" alt="Экспорт чарта">
-        </button>
-        <button class="btn_save">
-            <h3 class="text-h3 text-white">сохранить</h3>
-        </button>
-    </div>
-    {% load plotly_dash %}
-    {% plotly_app name="ChartBuilder" ratio=1 %}
-    <!-- ratio в значении 1 позволяет отображать plotly_app на всю страницу -->
+<div class="work_section">
 
-</section>
+    <div class="form-group">
+        <label for="chart-type">Тип графика</label>
+        <select id="chart-type">
+            <option value="scatter">Точечный график (Scatter)</option>
+            <option value="line">Линейный график (Line)</option>
+            <option value="bar">Столбчатый график (Bar)</option>
+            <option value="horizontal_bar">Линейчатый график (Horizontal Bar)</option>
+            <option value="pie">Круговая диаграмма (Pie)</option>
+            <option value="donut">Кольцевая диаграмма (Donut)</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="x-column">Значения для оси X (категорий)</label>
+        <select id="x-column"></select>
+    </div>
+
+    <div class="form-group">
+        <label for="y-column">Значения для оси Y (значений)</label>
+        <select id="y-column"></select>
+    </div>
+
+    <h3>Фильтры</h3>
+    <div class="form-group">
+        <label for="filter-column">Столбец</label>
+        <select id="filter-column">
+            <option value="">не выбрано</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="filter-operator">Условие</label>
+        <select id="filter-operator"></select>
+    </div>
+    <div class="form-group">
+        <label for="filter-value">Значение</label>
+        <input type="text" id="filter-value" placeholder="Введите значение">
+    </div>
+
+    <div class="form-group">
+        <label for="sort-order">Сортировка данных по оси Y</label>
+        <select id="sort-order">
+            <option value="none">без сортировки</option>
+            <option value="ascending">по возрастанию</option>
+            <option value="descending">по убыванию</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="aggregation-function">Агрегация</label>
+        <select id="aggregation-function">
+            <option value="none">без агрегации</option>
+            <option value="sum">сумма</option>
+            <option value="max">максимум</option>
+            <option value="min">минимум</option>
+            <option value="count">количество</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="chart-title">Заголовок чарта</label>
+        <input type="text" id="chart-title">
+    </div>
+
+    <button id="build-chart">Построить график</button>
+    <div id="chart"></div>
+</div>
+
+<script>
+const df = {{ dataframe|safe }};
+
+function initDropdowns() {
+    const columns = Object.keys(df[0]);
+
+    $('#x-column').append(`<option value="">не выбрано</option>`);
+    $('#y-column').append(`<option value="">не выбрано</option>`);
+    columns.forEach(col => {
+        $('#x-column').append(`<option value="${col}">${col}</option>`);
+        $('#y-column').append(`<option value="${col}">${col}</option>`);
+        $('#filter-column').append(`<option value="${col}">${col}</option>`);
+    });
+
+    $('#filter-operator').append(`<option value="">не выбрано</option>`);
+}
+
+function updateFilterOperators(column) {
+    $('#filter-operator').empty();
+    $('#filter-operator').append(`<option value="">не выбрано</option>`);
+
+    const sampleValue = df[0][column];
+    const isString = typeof sampleValue === 'string';
+
+    if (isString) {
+        $('#filter-operator').append(`
+            <option value="равно">равно</option>
+            <option value="содержит">содержит</option>
+            <option value="не содержит">не содержит</option>
+        `);
+    } else {
+        $('#filter-operator').append(`
+            <option value="равно">==</option>
+            <option value="не равно">!=</option>
+            <option value="меньше"><</option>
+            <option value="меньше или равно"><=</option>
+            <option value="больше">></option>
+            <option value="больше или равно">>=</option>
+        `);
+    }
+}
+
+function buildChart() {
+    const chartType = $('#chart-type').val();
+    const xColumn = $('#x-column').val();
+    const yColumn = $('#y-column').val();
+    const filterColumn = $('#filter-column').val();
+    const filterOperator = $('#filter-operator').val();
+    const filterValue = $('#filter-value').val();
+    const sortOrder = $('#sort-order').val();
+    const aggregation = $('#aggregation-function').val();
+    const chartTitle = $('#chart-title').val();
+
+    let filteredData = df;
+
+    if (filterColumn && filterOperator && filterValue) {
+        const sampleValue = df[0][filterColumn];
+        const isString = typeof sampleValue === 'string';
+
+        filteredData = filteredData.filter(row => {
+            const columnValue = row[filterColumn];
+            if (isString) {
+                switch (filterOperator) {
+                    case 'равно':
+                        return columnValue === filterValue;
+                    case 'содержит':
+                        return columnValue.includes(filterValue);
+                    case 'не содержит':
+                        return !columnValue.includes(filterValue);
+                    default:
+                        return true;
+                }
+            } else {
+                const value = Number(filterValue);
+                switch (filterOperator) {
+                    case 'равно':
+                        return columnValue == value;
+                    case 'не равно':
+                        return columnValue != value;
+                    case 'меньше':
+                        return columnValue < value;
+                    case 'меньше или равно':
+                        return columnValue <= value;
+                    case 'больше':
+                        return columnValue > value;
+                    case 'больше или равно':
+                        return columnValue >= value;
+                    default:
+                        return true;
+                }
+            }
+        });
+    }
+
+
+    // сортировка
+    if (sortOrder === 'ascending') {
+        filteredData.sort((a, b) => a[yColumn] - b[yColumn]);
+    } else if (sortOrder === 'descending') {
+        filteredData.sort((a, b) => b[yColumn] - a[yColumn]);
+    }
+
+    // агрегация
+    let aggregatedData = [];
+    if (aggregation !== 'none') {
+        const aggrMap = {
+            'sum': (data) => data.reduce((sum, row) => sum + row[yColumn], 0),
+            'max': (data) => Math.max(...data.map(row => row[yColumn])),
+            'min': (data) => Math.min(...data.map(row => row[yColumn])),
+            'count': (data) => data.length
+        };
+
+        const aggregatedValue = aggrMap[aggregation](filteredData);
+        aggregatedData = [{
+            [xColumn]: 'Aggregate',
+            [yColumn]: aggregatedValue
+        }];
+    } else {
+        aggregatedData = filteredData;
+    }
+
+    let trace;
+    const layout = {
+        title: chartTitle,
+        xaxis: {
+            title: $('#x-column').val() // Это будет подписью для оси X
+        },
+        yaxis: {
+            title: $('#y-column').val() // Это будет подписью для оси Y
+        }
+    
+    };
+
+    if (chartType === 'scatter') {
+        trace = {
+            x: aggregatedData.map(row => row[xColumn]),
+            y: aggregatedData.map(row => row[yColumn]),
+            type: 'scatter',
+            mode: 'markers'
+        };
+    } else if (chartType === 'line') {
+        trace = {
+            x: aggregatedData.map(row => row[xColumn]),
+            y: aggregatedData.map(row => row[yColumn]),
+            type: 'scatter',
+            mode: 'lines'
+        };
+    } else if (chartType === 'bar') {
+        trace = {
+            x: aggregatedData.map(row => row[xColumn]),
+            y: aggregatedData.map(row => row[yColumn]),
+            type: 'bar'
+        };
+    } else if (chartType === 'horizontal_bar') {
+        trace = {
+            x: aggregatedData.map(row => row[yColumn]),
+            y: aggregatedData.map(row => row[xColumn]),
+            type: 'bar',
+            orientation: 'h'
+        };
+    } else if (chartType === 'pie' || chartType === 'donut') {
+        trace = {
+            labels: aggregatedData.map(row => row[xColumn]),
+            values: aggregatedData.map(row => row[yColumn]),
+            type: 'pie',
+            ...(chartType === 'donut' && { hole: 0.4 })
+        };
+    }
+
+    Plotly.newPlot('chart', [trace], layout);
+}
+
+$(document).ready(() => {
+    initDropdowns();
+
+    $('#filter-column').change(function () {
+        const selectedColumn = $(this).val();
+        updateFilterOperators(selectedColumn);
+    });
+
+    $('#build-chart').click(buildChart);
+});
+
+
+</script>
+
 
 {% endblock %}

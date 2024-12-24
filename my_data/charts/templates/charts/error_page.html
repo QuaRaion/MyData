@@ -1,14 +1,18 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% extends 'main/nav_bar.html' %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../charts/test.css">
-</head>
+{% block title %}404{% endblock %}
 
-<body>
-  <h1>Ошибка при чтении файла!!!</h1>
-</body>
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'charts/css/style.css' %}">
+    <link rel="stylesheet" href="../charts/test.css">
+{% endblock %}
 
-</html>
+{% block active2 %}active_btn{% endblock %}
+
+{% block content %}
+{% load static %}
+
+  <h1 class="text-h1 text-black">Ошибка при чтении файла!</h1>
+
+{% endblock %}

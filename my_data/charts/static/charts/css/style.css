@@ -413,8 +413,9 @@
   padding-bottom: 30px;
 }
 
-.plotly_app {
-
+.form-group {
+  margin-bottom: 15px;
 }
-
-
+label {
+  font-weight: bold;
+}
