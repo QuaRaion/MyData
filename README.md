@@ -83,7 +83,23 @@ pip install -r requirements.txt
 Откройте файл my_data/my_data/settings.py и выполните следующие действия:
 
 - Закомментируйте строки, связанные с настройкой базы данных PostgreSQL.
+  ```
+  'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'my_data',
+        'USER': 'postgres',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+  ```
 - Раскомментируйте строки, связанные с настройкой SQLite либо настройте для подключения свою БД
+```
+'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+```
 ### 4. Применение миграций
 Подготовьте базу данных с помощью следующих команд:
 
