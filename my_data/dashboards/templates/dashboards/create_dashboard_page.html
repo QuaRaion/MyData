@@ -1,0 +1,177 @@
+{% extends 'main/nav_bar.html' %}
+
+{% block title %}Создание дашборда{% endblock %}
+
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'dashboards/css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+{% endblock %}
+
+{% block active3 %}active_btn{% endblock %}
+
+{% block content %}
+
+<section class="work_section">
+    <div class="dashboard_builder">
+        <input type="text" id="dashboard_name" placeholder="Название дашборда" class="dashboard_input">
+
+        <ul id="chart_items">
+            <h3>Доступные чарты:</h3>
+            {% for chart in charts %}
+            <li class="chart_item" draggable="true" data-chart-id="{{ chart.chart_id }}">
+                {{ chart.name }}
+            </li>
+            {% endfor %}
+        </ul>
+        
+        <div class="dashboard_area">
+            <h3>Область дашборда:</h3>
+            <div id="dashboard_layout" class="dashboard_dropzone"></div>
+        </div>
+        
+
+        <button id="save_dashboard_btn" class="save_btn">Сохранить дашборд</button>
+    </div>
+</section>
+<style>
+    .dashboard_dropzone {
+        border: 2px dashed #ccc;
+        min-height: 300px;
+        padding: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .chart_container {
+        width: 300px;
+        height: 300px;
+        border: 1px solid #ddd;
+        padding: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+</style>
+
+{% endblock %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const chartItems = document.querySelectorAll('.chart_item');
+        const dashboardLayout = document.getElementById('dashboard_layout');
+        const saveButton = document.getElementById('save_dashboard_btn');
+    
+        chartItems.forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('chartId', item.dataset.chartId);
+            });
+        });
+    
+        dashboardLayout.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+    
+        dashboardLayout.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const chartId = e.dataTransfer.getData('chartId');
+            console.log(`Перетаскивание чарта с ID: ${chartId}`);
+    
+            fetch(`/charts/${chartId}/filters/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.filters) {
+                        console.log(`Данные фильтров получены для чарта:`, data.filters);
+    
+                        const filters = data.filters;
+                        const xColumn = filters.xColumn;
+                        const yColumn = filters.yColumn;
+                        const chartType = filters.chartType || 'bar'; // Тип графика
+                        const chartTitle = filters.chartTitle || 'График';
+    
+                        // Пример данных (в реальном проекте их нужно извлечь из БД)
+                        const labels = ["Пример 1", "Пример 2", "Пример 3"]; // Используйте данные из xColumn
+                        const values = [10, 20, 30]; // Используйте данные из yColumn
+    
+                        const chartContainer = document.createElement('div');
+                        chartContainer.classList.add('chart_container');
+    
+                        const chartCanvas = document.createElement('canvas');
+                        chartCanvas.id = `chart_${chartId}`;
+                        chartContainer.appendChild(chartCanvas);
+    
+                        const ctx = chartCanvas.getContext('2d');
+    
+                        new Chart(ctx, {
+                            type: chartType,
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: chartTitle,
+                                    data: values,
+                                    backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+                                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: chartTitle
+                                    }
+                                }
+                            }
+                        });
+    
+                        dashboardLayout.appendChild(chartContainer);
+                    } else {
+                        alert('Не удалось загрузить данные фильтров для чарта.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка при запросе данных фильтров:', error);
+                    alert('Произошла ошибка при загрузке данных для чарта.');
+                });
+        });
+    
+        saveButton.addEventListener('click', () => {
+            const name = document.getElementById('dashboard_name').value;
+            const placedCharts = document.querySelectorAll('.chart_container canvas');
+            const charts = Array.from(placedCharts).map(chart => chart.id.replace('chart_', ''));
+    
+            if (!name) {
+                alert('Введите название дашборда!');
+                return;
+            }
+    
+            const data = {
+                name: name,
+                charts: charts,
+            };
+    
+            fetch('/home/dashboards/save_dashboard/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.dashboard_id) {
+                        alert('Дашборд сохранён успешно!');
+                        window.location.href = '/home/dashboards/';
+                    } else {
+                        alert('Ошибка при сохранении дашборда.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка при сохранении дашборда:', error);
+                });
+        });
+    });
+    
+</script>

@@ -6,8 +6,10 @@ class Dashboard(models.Model):
     dashboard_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
-    created_time = models.DateTimeField(auto_now=True)
     charts = models.ManyToManyField(Chart, related_name='dashboards')
+    created_time = models.DateTimeField(auto_now=True)
+    update_time = models.DateTimeField(auto_now=True)
+    is_public = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'dashboards'
