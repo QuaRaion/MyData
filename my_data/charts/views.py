@@ -3,15 +3,8 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 import pandas as pd
 from django.contrib.auth.decorators import login_required
-from files.models import *
 from .models import *
 
-# from django.views.generic import DetailView
-# from django.db import connection
-# import pyarrow.parquet as pq
-# from django_plotly_dash import DjangoDash
-# from dash import dcc, html, Input, Output, State
-# import plotly.express as px
 
 @login_required
 def render_charts_page (request):

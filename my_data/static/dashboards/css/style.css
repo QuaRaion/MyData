@@ -1,0 +1,60 @@
+.charts_list {}
+
+.title_with_btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+}
+
+.title_with_btn_text {
+  color: var(--black-color);
+}
+
+.btn_add {
+  background-color: var(--accent-color);
+  border: transparent;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  transition: .3s ease;
+}
+
+.btn_add:hover {
+  transform: scale(1.05);
+}
+
+.btn_add_img {
+  padding-right: 6px;
+}
+
+.elem_list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-bottom: 30px;  
+}
+
+.elem_list_btn {
+  border-color: var(--grey-color);
+  border-width: 1px;
+  border-radius: 4px;
+  padding: 6px 8px;
+  min-width: 160px;
+  max-width: 280px;
+  white-space: nowrap; /* ограничение на 1 строку  */
+  flex: auto;
+  overflow: hidden;
+  
+  background-color: transparent;
+  transition: .3s ease;
+  display: block;
+}
+
+.elem_list_btn:hover {
+  border-color: var(--black-color);
+  transform: scale(1.03);
+}

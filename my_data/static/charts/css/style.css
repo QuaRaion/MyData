@@ -1,0 +1,444 @@
+.input {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 16px 10px;
+  background-color: var(--light-grey-color);
+  border-radius: 10px;
+  box-shadow: 12.5px 12.5px 10px rgba(0, 0, 0, 0.015),100px 100px 80px rgba(0, 0, 0, 0.03);
+}
+
+.input:focus {
+  border: 1px solid rgb(23, 111, 211);
+}
+
+.charts_list {}
+
+.title_with_btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+}
+
+.title_with_btn_text {
+  color: var(--black-color);
+}
+
+.btn_add {
+  background-color: var(--accent-color);
+  border: transparent;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  transition: .3s ease;
+}
+
+.btn_add:hover {
+  transform: scale(1.05);
+}
+
+.btn_add_img {
+  padding-right: 6px;
+}
+
+.elem_list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-bottom: 30px;  
+}
+
+.elem_list_btn {
+  border-color: var(--grey-color);
+  border-width: 1px;
+  border-radius: 4px;
+  padding: 6px 8px;
+  min-width: 160px;
+  max-width: 280px;
+  white-space: nowrap;
+  flex: auto;
+  overflow: hidden;
+  
+  background-color: transparent;
+  transition: .3s ease;
+  display: block;
+}
+
+.elem_list_btn:hover {
+  border-color: var(--black-color);
+  transform: scale(1.03);
+}
+
+.modal_window[open] {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 30px;
+  max-width: 600px;
+  background-color: var(--white-color);
+  border: 1px solid var(--grey-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal_window[open] .modal_window_content {
+  max-height: 400px;
+  max-height: 280px;
+  position: relative;
+}
+
+.title {
+  padding-top: 4px;
+  padding-bottom: 10px;
+}
+
+.none_text_end {
+  padding-bottom: 50px;
+}
+
+.elem_list_end {
+  padding-bottom: 50px;
+}
+
+.modal_window_btn {
+  position: sticky;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  justify-content: end;
+  flex-direction: row;
+  justify-self: end;
+}
+
+.btn_close_modal {
+  padding: 6px 10px;
+  background-color: var(--grey-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.btn_select_file {
+  padding: 6px 10px;
+  margin-left: 20px;
+  box-shadow: 0 4px 10px rgba(3, 131, 245, 0.2);
+}
+
+.selected_file {
+  border-color: var(--black-color);
+}
+
+/* СТРАНИЦА СОЗДАНИЯ ЧАРТА */
+.create_chart_page {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 55px);
+}
+
+.left {
+  padding: 10px 8px;
+  height: 100%;  
+  max-width: 250px;
+  /* height: 100%; */
+  max-height: calc(100vh - 55px);
+  flex: 1;
+  border-right: 2px solid var(--grey-color);
+  overflow: scroll;
+}
+
+.search_field {
+  position: relative;
+  border-width: 3px;
+  border-color: var(--black-color);
+  padding-bottom: 10px;
+}
+
+.input_container {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--grey-color);
+  border-radius: 8px;
+  padding: 6px 8px;
+  transition: .3s ease;
+}
+
+.search_input {
+  border: none;
+  flex-grow: 1;
+}
+
+.search_input:focus {
+  outline: none;
+  border: none;
+}
+
+.search_input::placeholder {
+  color: var(--dark-grey-color);
+  font-family: 'Onest';
+  font-weight: 500;
+}
+
+.search_btn {
+  border: none;
+  transition: .15s ease;
+}
+
+.search_btn:hover {
+  transform: scale(1.1);
+}
+
+.search_btn {
+  background: none;
+  margin-left: 5px;
+}
+
+.search_btn img {
+  width: 15px;
+  height: auto;
+}
+
+.list_title {
+  margin-left: 10px;
+}
+
+.columns_list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 4px;
+  padding-bottom: 10px;
+}
+
+.columns_list_elem {
+  display: flex;
+  align-items: start;
+  background-color: transparent;
+  border-color: var(--grey-color);
+  border-width: 1px;
+  border-radius: 8px;
+  padding: 6px 8px;
+  overflow: hidden;
+  white-space: nowrap;
+
+  cursor: move;
+  transition: .3s ease;
+}
+
+.columns_list_elem:hover {
+  border-color: var(--black-color);
+}
+
+.columns_list_elem .draggable .dragging {
+  
+}
+
+.function_list {
+  /* margin-top: ; */
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.func {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-color: var(--grey-color);
+  border-width: 1px;
+  border-radius: 8px;
+  padding: 6px 8px;
+  overflow: hidden;
+  white-space: nowrap;
+
+}
+
+.func:hover {
+  border-color: var(--black-color);
+}
+
+.func_icon {
+  width: 18px;
+  transition: .3s ease;
+}
+
+.func_icon:hover {
+  transform: scale(1.1);
+} 
+
+/* стилизация рамки, 
+когда столбец находится над полем ввода */
+.drag-over {
+  background-color: var(--grey-color);
+  border: 2px dashed var(--dark-grey-color);
+}
+
+.right {
+  background-color: var(--white-color);
+  padding: 10px 8px;
+  padding-left: 10px;
+  flex: 2;
+  height: 100%;
+}
+
+.right_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-height: 28px;
+}
+
+.diagram_type {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 10px;
+}
+
+.select_area {
+  position: relative;
+  margin-left: 10px;
+  padding: 4px 8px;
+  border: 1px solid var(--dark-grey-color);
+  border-radius: 8px;
+  transition: .3s ease;
+}
+
+.select_area:hover {
+  border-color: var(--accent-color);
+}
+
+.build-chart-btn{
+  margin-left: 10px;
+  padding-left: 10px;
+}
+
+.select_diagram_type {
+  appearance: none; 
+  -webkit-appearance: none;
+  margin-left: 5px;
+  background-color: transparent;
+  border: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.save_diagram {
+  display: flex;
+  justify-content: end;
+}
+
+.btn_export {
+  background-color: transparent;
+  border: 1px solid var(--dark-grey-color);
+  border-radius: 8px;
+  display: flex;
+  justify-self: center;
+  align-items: center;
+  margin-right: 10px;
+  transition: .3s ease;
+}
+
+.btn_export:hover {
+  transform: scale(1.1);
+}
+
+.btn_export_img {
+  padding: 5px;
+  max-height: 28px;
+}
+
+.btn_save {
+  background-color: var(--accent-color);
+  border: none;
+  border-radius: 8px;
+  padding: 4px 8px;
+  transition: .3s ease;
+}
+
+.btn_save:hover {
+  transform: scale(1.05);
+}
+
+.chart_preview {
+  width: 100%;
+  margin-top: 30px;
+  background-color: transparent;
+}
+
+/* ЗОНА ОТОБРАЖЕНИЯ ГРАФИКА */
+.chart_preview {
+  /* margin-top: 30px;
+  height: 80%; */
+  position: relative;
+}
+
+.chart_preview_top {
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 300px);
+}
+
+.y_axes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  background-color: transparent; 
+  padding: 20px 10px;
+  margin-left: 40px;
+  border: 1px dashed var(--dark-grey-color);
+  border-radius: 8px;
+}
+
+.plotly_figure {
+  flex: 1;
+  background-color: transparent;
+  border: 1px solid var(--black-color);
+  border-radius: 8px;
+  padding: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.x_axes {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent; 
+  padding: 10px 20px;
+  border: 1px dashed var(--dark-grey-color);
+  border-radius: 8px;
+}
+
+.drop_list {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  background-color: transparent;
+  border-color: var(--grey-color);
+  border-width: 1px;
+  border-radius: 8px;
+  padding: 6px 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: .3s ease;
+}

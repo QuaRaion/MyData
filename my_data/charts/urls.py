@@ -1,5 +1,4 @@
 from django.urls import path, include
-# from django_plotly_dash.views import add_to_session
 from . import views
 
 urlpatterns = [

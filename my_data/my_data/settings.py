@@ -36,10 +36,6 @@ INSTALLED_APPS = [
     'files',    
     'charts',
     'dashboards',
-    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
-    'channels',
-    'formtools',
-    'dpd_static_support',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,8 +45,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django_plotly_dash.middleware.BaseMiddleware',
-    'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -63,8 +57,6 @@ MIDDLEWARE = [
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'django_plotly_dash.finders.DashAssetFinder',
-    'django_plotly_dash.finders.DashComponentFinder',
 ]
 
 ROOT_URLCONF = 'my_data.urls'
@@ -163,31 +155,14 @@ STATICFILES_DIR = [
     BASE_DIR / "static",
 ]
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / 'static'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
-MEDIA_URL = '/files/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = 'media/'
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# X_FRAME_OPTIONS = 'SAMEORIGIN'
-
-# PLOTLY_COMPONENTS = [
-#     'dash_core_components',
-#     'dash_html_components',
-#     'dash_table',
-#     'dash_daq',
-# ]
-
-
-
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels_redis.core.RedisChannelLayer",
-#     },
-# }
 

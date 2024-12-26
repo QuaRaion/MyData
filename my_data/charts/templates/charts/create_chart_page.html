@@ -27,7 +27,7 @@
             <h3 class="text-h4 text-dark-grey list_title">ось Y</h3>
             <select id="y-column" class="drop_list"></select>
 
-            <h3 class="text-h4 text-dark-grey list_title">фильтры</h3>
+            <h3 class="text-h4 text-dark-grey list_title">фильтры по столбцу</h3>
             <select id="filter-column" class="drop_list">
                 <option value="">не выбрано</option>
             </select>
@@ -37,16 +37,17 @@
 
             <div class="input_container">
                 <input type="text" maxlength="30" id="filter-value" class="text-h4 text-black search_input"
-                    placeholder="ввести значение">
+                    placeholder="значение">
             </div>
 
-            <h3 class="text-h4 text-dark-grey list_title">параметры</h3>
+            <h3 class="text-h4 text-dark-grey list_title">сортировка</h3>
             <select id="sort-order" class="drop_list">
                 <option value="none">без сортировки</option>
                 <option value="ascending">по возрастанию</option>
                 <option value="descending">по убыванию</option>
             </select>
 
+            <h3 class="text-h4 text-dark-grey list_title">агрегация</h3>
             <select id="aggregation-function" class="drop_list">
                 <option value="none">без агрегации</option>
                 <option value="sum">сумма</option>
@@ -76,15 +77,15 @@
                         <h3 class="text-h3 text-white">построить</h3>
                     </button>
                 </div>
-                <div class="save_diagram">
+                <div class="save_diagram diagram_type">
                     <!-- кнопка для сохранения чарта в пнг -->
                     <!-- <button class="btn_export">
                         <img class="btn_export_img" src="{% static 'charts/img/export_file.svg' %}" alt="Экспорт чарта">
                     </button> -->
 
-                    <div>
-                        <label for="chart-name">Введите название чарта:</label>
-                        <input type="text" id="chart-name" placeholder="Название чарта" />
+                    <div class="input_container">
+                        <input type="text" maxlength="30" id="chart-name" class="text-h4 text-black search_input"
+                            placeholder="Название чарта">
                     </div>
 
                     <button id="save-chart" class="btn_save">
